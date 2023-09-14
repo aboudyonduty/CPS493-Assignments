@@ -1,0 +1,253 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="https://bulma.io">
+              <img src="https://bulma.io/images/bulma-logo-white.png" width="112" height="28">
+            </a>
+        
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="https://bulma.io/">Home</a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class = "navbar-link"href="https://bulma.io/documentation/overview/start/">Docs</a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="https://bulma.io/documentation/overview/start/">Overview</a>
+                        <a class="navbar-item" href="https://bulma.io/documentation/overview/modifiers/">Modifiers</a>
+                        <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">Columns</a>
+                        <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">Layout</a>
+                        <a class="navbar-item" href="https://bulma.io/documentation/form/general/">Form</a>
+                        <hr class = "navbar-divider">
+                        <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">Elements</a>
+                        <a class="navbar-item" href ="https://bulma.io/documentation/components/breadcrumb/">Components</a>
+                    </div> 
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Tweet</strong>
+                        </a>
+                        <a class="button is-light">
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+    <div class="columns">
+        <div id="first" class="column is-one-quarter">
+            <div class="card">
+                <header class="card-header">
+                  <p class="card-header-title">
+                    Component
+                  </p>
+                  <button class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </header>
+                <div class="card-content">
+                  <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                    <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+                    <br>
+                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                  </div>
+                </div>
+                <footer class="card-footer">
+                  <a href="#" class="card-footer-item">Save</a>
+                  <a href="#" class="card-footer-item">Edit</a>
+                  <a href="#" class="card-footer-item">Delete</a>
+                </footer>
+              </div>
+        </div>
+        <div id="second" class="column is-two-quarters">
+            <div class="card">
+                <div class="tabs is-boxed">
+                    <ul>
+                      <li class="is-active">
+                        <a>
+                          <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+                          <span>Current</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a>
+                          <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                          <span>Completed</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a>
+                          <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+                          <span>Upcoming</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                <input class="input" type="text" placeholder="Text input">
+                <nav class="panel">
+                    <label class="panel-block"><input type="checkbox">Make Bulma great again</label>
+                    <label class="panel-block"><input type="checkbox">Add some more features</label>
+                    <label class="panel-block"><input type="checkbox">Make a github account</label>
+                    <label class="panel-block"><input type="checkbox">Learn how to use github</label>
+                    <label class="panel-block"><input type="checkbox">add a .gitignore file</label>
+              </nav>
+            </div>
+            <br>
+            <div class="notification is-primary is-light">
+                <label id="github"class="label">Make a github account</label>
+                <button class="delete"></button>
+                Go to <a href="github.com">github.com</a> and create an account.
+That's where you'll be able to ></a>share your work with the world.. thats where we will be putting all of our code for this class.
+                <progress class="progress is-success" value="60" max="100">60%</progress>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Username</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input is-success" type="text" placeholder="Text input" value="bulma">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <span class="icon is-small is-right">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </div>
+                        <p class="help is-success">This username is available</p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <span class="icon is-small is-right">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </span>
+                        </div>
+                            <p class="help is-danger">This email is invalid</p>
+                        </div>
+                        
+                        <div class="field">
+                            <label class="label">Subject</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select>
+                                        <option>Select dropdown</option>
+                                        <option>With options</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <label class="label">Message</label>
+                            <div class="control">
+                                <textarea class="textarea" placeholder="Textarea"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <div class="control">
+                                <label class="checkbox">
+                                <input type="checkbox">
+                                I agree to the <a href="#">terms and conditions</a>
+                            </label>
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                        <div class="control">
+                            <label class="radio">
+                            <input type="radio" name="question">
+                            Yes
+                            </label>
+                            <label class="radio">
+                            <input type="radio" name="question">
+                            No
+                            </label>
+                        </div>
+                        </div>
+                        
+                        <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link">Submit</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-light">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+
+            </div>
+            
+        </div>
+        <div id="third" class="column is-one-quarter">
+            <h1 class="title is-3">Table of Contents</h1>
+            <h5 class="subtitle is-5">Intra-page navigation</h5>
+            <aside class="menu">
+                <p class="menu-label">
+                    General
+                </p>
+                <ul class="menu-list">
+                    <li><a>Dashboard</a></li>
+                    <li><a>Customers</a></li>
+                </ul>
+                <p class="menu-label">
+                    Administration
+                </p>
+                <ul class="menu-list">
+                    <li><a>Team Settings</a></li>
+                    <li>
+                    <a class="is-active">Manage Your Team</a>
+                    <ul>
+                        <li><a>Members</a></li>
+                        <li><a>Plugins</a></li>
+                        <li><a>Add a member</a></li>
+                    </ul>
+                    </li>
+                    <li><a>Invitations</a></li>
+                    <li><a>Cloud Storage Environment Settings</a></li>
+                    <li><a>Authentication</a></li>
+                </ul>
+                <p class="menu-label">
+                    Transactions
+                </p>
+                <ul class="menu-list">
+                    <li><a>Payments</a></li>
+                    <li><a>Transfers</a></li>
+                    <li><a>Balance</a></li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

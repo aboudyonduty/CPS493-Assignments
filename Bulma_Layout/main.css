@@ -1,0 +1,17 @@
+.container{
+    margin: 25px;
+}
+.navbar{
+    background-color: #08d4b4;
+}
+#github{
+    color: white;
+    background-color: #08d4b4;
+}
+#checklist {
+    display: flex;
+    flex-direction: column;
+}
+#second{
+    margin: auto;
+}
