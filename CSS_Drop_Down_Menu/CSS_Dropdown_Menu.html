@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="utf-8">
+        <title>Menu Example</title>
+        <style>
+            body{
+                background-color: #DCFAE6;
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .navBar .navContent{
+                font-size: 12px;
+                margin-right: 60px;
+            }
+            .navBar{
+                background-color: #279C40;
+                display: flex;
+                flex-direction: row;
+            }
+            .navContent:hover{
+                background-color: #27C440;
+            }
+            .navContent:hover .navSubContent{
+                display: flex;
+                flex-direction: column;
+                background-color: #27C440;
+            }
+            .navContent:hover a{
+                padding: 3px;
+                font-size: 17px;
+                text-decoration: none;
+            }
+            .navContent:hover a:hover {
+                background-color: #27FF40 ;
+            }
+            .navSubContent{
+                display: none;
+                position: absolute;
+            }
+            .instructionsExtraCredit{
+                margin:auto;
+                width: 1170px;
+            }
+            .instructions{
+                border-width: 5px;
+                border-color: #26C03F;
+                border-left-style: solid ;
+                background-color: white;
+                margin-top: 17px;
+                padding: 5px;
+            }
+            .instructionsExtraCredit h2{
+                padding-left: 10px;
+                font-size: 19px;
+            }
+            .instructionsExtraCredit p{
+                padding-left: 10px;
+            }
+            .extraCredit{
+                border-color: #F5F550;
+                border-width: 5px;
+                border-left-style: solid;
+                background-color: white;
+                margin-top: 17px;
+                padding: 5px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <nav class = "navBar">
+            <div class = "navContent">
+                <h2>File</h2>
+                <div class = "navSubContent">
+                    <a href = "">New</a>
+                    <a href = "">Open</a>
+                    <a href = "">Save</a>
+                    <a href = "">Print</a>
+                    <a href = "">Close</a>
+                </div>
+            </div>
+            <div class = "navContent">
+                <h2>Edit</h2>
+                <div class = "navSubContent">
+                    <a href = "">Undo</a>
+                    <a href = "">Redo</a>
+                    <a href = "">Cut</a>
+                    <a href = "">Copy</a>
+                    <a href = "">Paste</a>
+                    <a href = "">Delete</a>
+                    <a href = "">Select All</a>
+                </div>
+            </div>
+            <div class = "navContent">
+                <h2>View</h2>
+                <div class = "navSubContent">
+                    <a href = "">Zoom In</a>
+                    <a href = "">Zoom Out</a>
+                    <a href = "">Actual Size</a>
+                    <a href = "">Fit Page</a>
+                    <a href = "">Fit Width</a>
+                    <a href = "">Fit Height</a>
+                    <a href = "">Rotate Left</a>
+                    <a href = "">Rotate Right</a>
+                    <a href = "">Full Screen</a>
+                </div>
+            </div>
+        </nav>
+        <div class = "instructionsExtraCredit">
+            <div class = "instructions">
+                <h2>Instructions</h2>
+                <div class = "words">
+                    <p>
+                    Recreate this page using <b><i>only CSS</i></b>. Do yourself a favor and 1) Do not view the source. 
+                    Figure it out yourself. 2) Do not search for the solution. Learn CSS until you know 
+                    enough to do this.
+                    </p>
+                </div>
+            </div>
+            <div class = "extraCredit">
+                <h2>Extra Credit</h2>
+                <div class = "words">
+                    <p>
+                        Notice how the Edit menu (besides for not being bold) reacts to clicks. 
+                        If you click the edit menu, it remains open until you click somewhere else. 
+                        (This you might need to search for)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
