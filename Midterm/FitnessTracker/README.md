@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Bismillah hir rahman nir raheem
 Alhamdu lillaahi Rabbil ‘aalameen
 Ar-Rahmaanir-Raheem
