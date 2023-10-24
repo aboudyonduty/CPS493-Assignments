@@ -1,3 +1,5 @@
+<!--InShaAllah-->
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
@@ -8,14 +10,14 @@ const isActive = ref(false);
 </script>
 
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="28" height="28" />
+      <RouterLink class="navbar-item" to="/">
+        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="32" height="32" />
 
-      </a>
+      </RouterLink>
 
-      <a role="button" class="navbar-burger" :class="{ 'is-active': isActive }" @click="isActive = !isActive" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a role="button" class="navbar-burger burger" :class="{ 'is-active': isActive }" @click="isActive = !isActive" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -24,7 +26,7 @@ const isActive = ref(false);
 
     <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-start">
-        <RouterLink class="navbar-item" to="/MyActivity" >My Activity</RouterLink>
+        <RouterLink class="navbar-item" to="/">My Activity</RouterLink>
         <RouterLink class="navbar-item" to="/FriendsActivity">Friends Activity</RouterLink>
         <RouterLink class="navbar-item" to="/UserAdminView">Admin/User</RouterLink>
   
@@ -37,13 +39,22 @@ const isActive = ref(false);
       </div>
     </div>
   </nav>
-  </template>
-
+</template>
 
 <style scoped>
-
+.navbar.is-dark {
+  background-color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .router-link-active {
   font-weight: bold;
-  border-bottom: 2px solid #00d1b2;
+  color: #00d1b2 !important; 
+  border-bottom: 3px solid #00d1b2;
+}
+.navbar-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.logo {
+  margin-right: 10px;
 }
 </style>

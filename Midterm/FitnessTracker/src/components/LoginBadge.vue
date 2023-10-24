@@ -1,3 +1,5 @@
+<!--InShaAllah-->
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getSession, useLogin } from '@/model/session';
@@ -5,21 +7,22 @@ import { getSession, useLogin } from '@/model/session';
 const session = getSession();
 const { login, logout } = useLogin();
 
+//list of all available users you can LogInto
 const defaultUsers = ref([
   { id: 1, email: 'aoali726@gmail.com', password: '9uQFF1Lh', name: 'Abdullah Ali' },
   { id: 2, email: 'superswag2077@icloud.com', password: 'CQutx25i8r', name: 'Swagatron McSwaggy' },
-  // ... Add more users if necessary
+  { id: 3, email: 'rshawe2@51.la', password: 'OWsTbMUgFc', name: 'Terrill Hills' },
+  { id: 4, email: 'yraigatt3@nature.com', password: 'sRQxjPfdS', name: 'Miles Cummerata' },
 ]);
-
+//looks to see if email and password match up in order to LogIn
 const doLogin = (email: string, password: string) => {
   login(email, password);
 }
-
+//LogOut
 const doLogout = () => {
   logout();
 }
 </script>
-
 
 <template>
   <div class="has-text-right" v-if="session.user">
@@ -34,10 +37,7 @@ const doLogout = () => {
     </small>
   </div>
   <div class="buttons" v-else>
-    <a class="button is-primary">
-      <strong>Sign up</strong>
-    </a>
-    <div class="dropdown is-hoverable">
+    <div class="dropdown is-hoverable is-right">
       <div class="dropdown-trigger">
         <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
           <span>Log in</span>
@@ -61,8 +61,6 @@ const doLogout = () => {
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 

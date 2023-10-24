@@ -1,3 +1,5 @@
+//InShaAllah
+
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import type { User } from "./users";
@@ -21,7 +23,7 @@ export function useLogin() {
       if (user && user.password === password) {
         session.user = user;
 
-        router.push(session.redirectUrl || "/MyActivity");
+        router.push(session.redirectUrl || "/");
 
         return user;
       }
@@ -29,7 +31,7 @@ export function useLogin() {
     },
     logout() {
       session.user = null;
-      router.push("/login");
+      router.push("/");
     },
   };
 }

@@ -1,4 +1,6 @@
-import data from "@/data/users.json";  // Ensure the path is correct
+//InShaAllah
+
+import data from "@/data/users.json"; 
 
 export interface User {
   id?: number;

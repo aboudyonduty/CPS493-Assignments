@@ -1,5 +1,42 @@
+<!--InShaAllah-->
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import { getSession } from '@/model/session';
+
+const session = getSession();
+
+const newWorkout = ref({
+  name: "",
+  workoutName: "",
+  date: "",
+  duration: 0,
+  calories: 0
+});
+
+const errors = ref([] as string[]);
+
+const emit = defineEmits(['new-workout']);
+
+const addWorkout = () => {
+  errors.value = [];  // reset the errors
+
+  // Validate the form fields
+  if (!newWorkout.value.name) errors.value.push("Name is required.");
+  if (!newWorkout.value.workoutName) errors.value.push("Workout Name is required.");
+  if (!newWorkout.value.date) errors.value.push("Date is required.");
+  if (!newWorkout.value.duration) errors.value.push("Duration is required.");
+
+  // Only continue if there are no errors
+  if (!errors.value.length) {
+    emit('new-workout', newWorkout.value);
+    newWorkout.value = { name: "", workoutName: "", date: "", duration: 0, calories: 0 };
+  }
+};
+</script>
+
 <template>
-  <div class="card">
+  <div class="card has-border-none">
     <header class="card-header">
       <p class="card-header-title">
         Add New Workout
@@ -9,7 +46,7 @@
       <div class="content">
 
         <!-- Display validation errors -->
-        <div v-if="errors.length" class="notification is-danger">
+        <div v-if="errors.length" class="notification is-light has-text-danger">
           <p v-for="error in errors" :key="error">{{ error }}</p>
         </div>
 
@@ -61,37 +98,15 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { getSession } from '@/model/session';
-
-const session = getSession();
-
-const newWorkout = ref({
-  name: "",
-  workoutName: "",
-  date: "",
-  duration: 0,
-  calories: 0
-});
-
-const errors = ref([] as string[]);
-
-const emit = defineEmits(['new-workout']);
-
-const addWorkout = () => {
-  errors.value = [];  // reset the errors
-
-  // Validate the form fields
-  if (!newWorkout.value.name) errors.value.push("Name is required.");
-  if (!newWorkout.value.workoutName) errors.value.push("Workout Name is required.");
-  if (!newWorkout.value.date) errors.value.push("Date is required.");
-  if (!newWorkout.value.duration) errors.value.push("Duration is required.");
-
-  // Only continue if there are no errors
-  if (!errors.value.length) {
-    emit('new-workout', newWorkout.value);
-    newWorkout.value = { name: "", workoutName: "", date: "", duration: 0, calories: 0 };
-  }
-};
-</script>
+<style scoped>
+.card.has-border-none {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.field {
+  margin-bottom: 1rem;
+}
+.notification.is-light {
+  background-color: #f5f5f5; 
+}
+</style>

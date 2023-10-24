@@ -1,3 +1,5 @@
+<!--InShaAllah-->
+
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted } from 'vue';
 import { type Workout } from '@/model/workout';
@@ -10,22 +12,16 @@ interface WorkoutsByUser {
   [email: string]: Workout[];
 }
 
-// This is your initial data structure.
 const initialWorkoutsData: WorkoutsByUser = {
-  'aoali726@gmail.com': [
-    { id: 1, date: "2023-10-22", workoutName: "Run", name:"Poop", duration: 30, calories: 10 },
-    // ... other workouts for user1
-  ],
-  'superswag2077@icloud.com': [
-    { id: 1, date: "2023-08-17", workoutName: "Run", name:"bob", duration: 60, calories: 10 },
-    // ... other workouts for user2
-  ]
-  // ... other users
+  
 };
 
+const savedWorkouts = localStorage.getItem('workouts');
+const workoutsFromLocalStorage: WorkoutsByUser = savedWorkouts ? JSON.parse(savedWorkouts) : {};
+
 const state = reactive({
-  allWorkouts: { ...initialWorkoutsData },
-  currentWorkouts: session.user ? (initialWorkoutsData[session.user.email] || []) : [],
+  allWorkouts: { ...initialWorkoutsData, ...workoutsFromLocalStorage },
+  currentWorkouts: session.user ? (workoutsFromLocalStorage[session.user.email] || initialWorkoutsData[session.user.email] || []) : [],
 });
 
 const handleAddWorkout = (workout: Workout) => {
@@ -42,18 +38,15 @@ const saveWorkoutsToLocalStorage = () => {
   localStorage.setItem('workouts', JSON.stringify(state.allWorkouts));
 };
 
-const loadWorkoutsFromLocalStorage = () => {
+onMounted(() => {
   const savedWorkouts = localStorage.getItem('workouts');
   if (savedWorkouts) {
-    // Merge saved workouts with the initial data.
     state.allWorkouts = { ...initialWorkoutsData, ...JSON.parse(savedWorkouts) };
     if (session.user) {
       state.currentWorkouts = state.allWorkouts[session.user.email] || [];
     }
   }
-};
-
-onMounted(loadWorkoutsFromLocalStorage);
+});
 
 const { allWorkouts, currentWorkouts } = toRefs(state);
 const isModalActive = ref(false);
@@ -130,52 +123,85 @@ const closeModal = () => isModalActive.value = false;
 
 <style scoped>
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1000px;
+  margin: 4rem auto;
   padding: 2rem;
-  font-family: 'Arial', sans-serif;
-  color: #333;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #555;
 }
 
 h2 {
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
 }
 
 .center-button {
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin: 3rem 0;
+}
+
+.button.is-primary {
+  background-color: #007aff;
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  font-weight: 500;
+  border: none;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.button.is-primary:hover {
+  background-color: #005ed4;
 }
 
 .workout-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .workout-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: #f4f4f4;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #eaeaea; 
 }
 
 .workout-detail-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
 }
 
 .workout-label {
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 0.5rem;
+  color: #777;
 }
 
 .workout-data {
-  font-size: 0.9rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.modal-card {
+  border: none;
+  border-radius: 8px;
+}
+
+.modal-card-head {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: #f7f7f7; 
+}
+
+.modal-card-title {
+  font-weight: 500;
+  color: #333;
 }
 </style>
