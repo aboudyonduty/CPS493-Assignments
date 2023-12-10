@@ -2,6 +2,7 @@
 
 import { createRouter, createWebHashHistory } from 'vue-router';
 import WorkoutPage from '../views/WorkoutPage.vue';
+import LoginView from '../views/LoginView.vue';
 import { getSession } from '@/model/session';
 
 const router = createRouter({
@@ -23,6 +24,11 @@ const router = createRouter({
       component: () => import("../views/userAdminView.vue"),
       meta: { requireAdmin: true },
       beforeEnter: requireAdmin,
+    },
+    {
+      path: "/LoginView",
+      name: "LoginView",
+      component: LoginView,
     },
   ],
 });

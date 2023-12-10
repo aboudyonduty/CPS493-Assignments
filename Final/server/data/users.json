@@ -1,0 +1,41 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "firstName": "Abdullah",
+        "lastName": "Ali",
+        "email": "aoali726@gmail.com",
+        "username": "atuny0",
+        "password": "9uQFF1Lh",
+        "role": "admin"
+      },
+    
+      {
+        "id": 2,
+        "firstName": "Swagatron",
+        "lastName": "McSwaggy",
+        "email": "superswag2077@icloud.com",
+        "username": "hbingley1",
+        "password": "CQutx25i8r",
+        "role":"user"
+      },
+      {
+        "id": 3,
+        "firstName": "Terrill",
+        "lastName": "Hills",
+        "email": "rshawe2@51.la",
+        "username": "rshawe2",
+        "password": "OWsTbMUgFc",
+        "role":"user"
+      },
+      {
+        "id": 4,
+        "firstName": "Miles",
+        "lastName": "Cummerata",
+        "email": "yraigatt3@nature.com",
+        "username": "yraigatt3",
+        "password": "sRQxjPfdS",
+        "role":"admin"
+      }
+    ]
+  }
