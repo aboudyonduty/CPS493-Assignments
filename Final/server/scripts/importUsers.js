@@ -1,5 +1,5 @@
 // Load environment variables from .env file
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path:'../.env'});
 const UsersController = require('../controllers/UsersController');
 
 const { MongoClient } = require('mongodb');

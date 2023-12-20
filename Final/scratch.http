@@ -1,0 +1,30 @@
+@host = http://localhost:3000
+@contentType = application/json
+
+###
+
+POST {{host}}/api/users HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "email": "user1@example.com",
+    "password": "user1Password",
+    "firstName": "User1FirstName",
+    "lastName": "User1LastName"
+}
+
+###
+
+POST {{host}}/api/users HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "email": "user2@example.com",
+    "password": "user2Password",
+    "firstName": "User2FirstName",
+    "lastName": "User2LastName"
+}
+
+###
+
+# Add more POST requests for other users in your users.json file

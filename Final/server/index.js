@@ -3,38 +3,42 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config(); // Load environment variables
 
-const app = express();
-
-// Middlewares
-app.use(cors()); // Enable CORS for all requests
-app.use(express.json()); // Parse JSON bodies
-
-// MongoDB Connection
 const mongoUtil = require('./models/mongo');
-mongoUtil.connectToServer((err) => {
-    if (err) {
-        console.error(err);
-        process.exit();
-    }
-});
-
-// Import routes
 const userRoutes = require('./routes/users');
 const workoutRoutes = require('./routes/workouts');
 const authRoutes = require('./routes/auth');
 
-// Use routes
-app.use('/api/users', userRoutes);
-app.use('/api/workouts', workoutRoutes);
-app.use('/api/auth', authRoutes);
+const app = express();
 
-// Serve Vue.js Frontend
-app.use(express.static(path.join(__dirname, '../dist')));
+// Apply middlewares
+app.use(cors()); // Enable CORS for all requests
+app.use(express.json()); // Parse JSON request bodies
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Function to start the Express server
+async function startServer() {
+    try {
+        // Connect to MongoDB
+        await mongoUtil.connectToMongo();
+        console.log("Successfully connected to MongoDB.");
 
-module.exports = app;
+        // Define routes
+        app.use('/api/auth', authRoutes);
+        app.use('/api/users', userRoutes);
+        app.use('/api/workouts', workoutRoutes);
+
+        // Serve static files from the Vue frontend app
+        app.use(express.static(path.join(__dirname, '../dist')));
+
+        // Start the server
+        const PORT = process.env.PORT ?? 3000;
+        app.listen(PORT, () => {
+            console.log(`Server running on port at http://localhost:${PORT}`);
+        });
+
+    } catch (error) {
+        console.error('Failed to connect to MongoDB:', error);
+        process.exit(1);
+    }
+}
+
+startServer();

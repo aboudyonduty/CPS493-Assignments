@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 // MongoDB connection details from environment variables
 const url = process.env.MONGO_URI;
-const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(url)
 const dbName = process.env.MONGO_DB_NAME;
 const usersCollection = 'users';
 
