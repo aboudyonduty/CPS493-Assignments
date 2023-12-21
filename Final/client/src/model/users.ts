@@ -1,8 +1,9 @@
 //InShaAllah
 
-import data from "@/data/users.json"; 
+import {api} from "./session";
 
 export interface User {
+  _id: string;
   id?: number;
   firstName: string;
   lastName: string;
@@ -13,15 +14,10 @@ export interface User {
   token?: string;
 }
 
-export function getUsers(): User[] {
-  return data.users.map(x => ({
-    ...x,
-    role: x.role as "admin" | "user",
-    
-  }));
+export async function getUsers(): Promise< User[]> {
+  return api("/UsersController/getAllUsers"); 
 }
 
-
-export function getUserByEmail(email: string): User | undefined {
-  return getUsers().find(x => x.email === email);
+export async function getUserByEmail(email: string): Promise<User> {
+  return api(`/UsersController/getUserByEmail/${email}`);
 }

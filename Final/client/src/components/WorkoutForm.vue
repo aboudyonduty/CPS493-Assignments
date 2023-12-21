@@ -7,7 +7,6 @@ import { getSession } from '@/model/session';
 const session = getSession();
 
 const newWorkout = ref({
-  name: "",
   workoutName: "",
   date: "",
   duration: 0,
@@ -22,7 +21,6 @@ const addWorkout = () => {
   errors.value = [];  // reset the errors
 
   // Validate the form fields
-  if (!newWorkout.value.name) errors.value.push("Name is required.");
   if (!newWorkout.value.workoutName) errors.value.push("Workout Name is required.");
   if (!newWorkout.value.date) errors.value.push("Date is required.");
   if (!newWorkout.value.duration) errors.value.push("Duration is required.");
@@ -30,7 +28,7 @@ const addWorkout = () => {
   // Only continue if there are no errors
   if (!errors.value.length) {
     emit('new-workout', newWorkout.value);
-    newWorkout.value = { name: "", workoutName: "", date: "", duration: 0, calories: 0 };
+    newWorkout.value = {workoutName: "", date: "", duration: 0, calories: 0 };
   }
 };
 </script>
@@ -48,14 +46,6 @@ const addWorkout = () => {
         <!-- Display validation errors -->
         <div v-if="errors.length" class="notification is-light has-text-danger">
           <p v-for="error in errors" :key="error">{{ error }}</p>
-        </div>
-
-        <!-- Name Input -->
-        <div class="field">
-          <label class="label">Name</label>
-          <div class="control">
-            <input v-model="newWorkout.name" class="input" type="text" placeholder="Your Name" />
-          </div>
         </div>
 
         <!-- Workout Name Input -->

@@ -1,31 +1,35 @@
-const jwt = require('jsonwebtoken');
+/* B"H
+*/
 
-// Middleware to verify if the user is authenticated
-exports.authenticate = (req, res, next) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decodedToken;
-        next();
-    } catch (error) {
-        res.status(401).json({ message: 'Authentication failed!' });
-    }
-};
+const usersModel = require('../models/users');
 
-// Middleware to check if the user is an admin
-exports.isAdmin = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
-        next();
-    } else {
-        res.status(403).json({ message: 'Admin privileges required!' });
+module.exports = {
+  async parseAuthorizationToken(req, res, next) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.split(' ')[1];
+    if (!token) {
+      return next();
     }
-};
-
-// Optional: Middleware to check if the user is accessing their own data or is an admin
-exports.canAccessUser = (req, res, next) => {
-    if (req.user && (req.user.id === req.params.id || req.user.role === 'admin')) {
-        next();
-    } else {
-        res.status(403).json({ message: 'Access denied!' });
+    const payload = await usersModel.verifyJWT(token);
+    req.user = payload;
+    next();
+  },
+  requireUser(adminOnly = false){
+    return function(req, res, next) {
+      if (!req.user) {
+        return next({
+          status: 401,
+          message: 'You must be logged in to perform this action.'
+        });
+      }
+      if (adminOnly && !req.user.admin) {
+        return next({
+          status: 403,
+          message: 'You must be an admin to perform this action.'
+        });
+      }
+      
+      next();
     }
-};
+  },
+}

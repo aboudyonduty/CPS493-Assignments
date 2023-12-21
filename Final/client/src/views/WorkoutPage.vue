@@ -25,7 +25,6 @@ const state = reactive({
 });
 
 const handleAddWorkout = (workout: Workout) => {
-  workout.id = Date.now();
   state.currentWorkouts.unshift(workout);
   if (session.user) {
     state.allWorkouts[session.user.email] = state.currentWorkouts;
@@ -67,13 +66,7 @@ const closeModal = () => isModalActive.value = false;
       
       <!-- Displaying Workouts -->
       <div class="workout-list">
-        <div class="workout-item" v-for="workout in currentWorkouts" :key="workout.id">
-          <!-- Name -->
-          <div class="workout-detail-section">
-            <span class="workout-label">Name:</span>
-            <span class="workout-data">{{ workout.name }}</span>
-          </div>
-
+        <div class="workout-item" v-for="workout in currentWorkouts">
           <!-- Workout -->
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>

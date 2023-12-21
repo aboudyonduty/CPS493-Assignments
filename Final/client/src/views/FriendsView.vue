@@ -8,10 +8,16 @@ import { getUserByEmail } from '@/model/users';
 
 const allUsersWorkoutsData = ref<{ [name: string]: Workout[] }>({});
 const isLoggedIn = ref(false);
+const email = ref('');
+const name = ref('');
+const lastname = ref('');
 
-onMounted(() => {
+onMounted(async () => {
   const session = getSession();
   if (session.user) {
+    // email.value = session.user.email;
+    // name.value = session.user.firstName;
+    // lastname.value = session.user.lastName;
     isLoggedIn.value = true;
 
     const allWorkoutsByEmail = JSON.parse(localStorage.getItem('workouts') || '{}') as { [email: string]: Workout[] };
@@ -19,8 +25,9 @@ onMounted(() => {
     for (let email in allWorkoutsByEmail) {
       // Skip if it's the logged-in user's email
       if (email === session.user.email) continue;
+      console.log(email);
 
-      const user = getUserByEmail(email);
+      const user = await getUserByEmail(email);
       if (user) {
         const userName = `${user.firstName} ${user.lastName}`;
         allUsersWorkoutsData.value[userName] = allWorkoutsByEmail[email];
@@ -38,13 +45,7 @@ onMounted(() => {
       <!-- Displaying Friends' Workouts -->
       <div class="workout-list" v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName">
         <h3>{{ userName }}'s Workouts</h3>
-        <div class="workout-item" v-for="workout in workouts" :key="workout.id">
-          <!-- Name -->
-          <div class="workout-detail-section">
-            <span class="workout-label">Name:</span>
-            <span class="workout-data">{{ workout.name }}</span>
-          </div>
-
+        <div class="workout-item" v-for="workout in workouts" :key="workout.email">
           <!-- Workout -->
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>

@@ -12,18 +12,20 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: WorkoutPage,
+      beforeEnter: requireLogin
     },
     {
       path: "/FriendsActivity",
       name: "friends",
       component: () => import("../views/FriendsView.vue"),
+      beforeEnter: requireLogin
     },
     {
       path: "/UserAdminView",
       name: "admin",
       component: () => import("../views/userAdminView.vue"),
       meta: { requireAdmin: true },
-      beforeEnter: requireAdmin,
+      beforeEnter: requireLogin
     },
     {
       path: "/LoginView",
@@ -37,7 +39,7 @@ function requireLogin(to: import('vue-router').RouteLocationNormalized, from: im
   const session = getSession();
   if (!session.user) {
     session.redirectUrl = to.fullPath;
-    next('/');
+    next('/login');
   } else {
     next();
   }
@@ -53,12 +55,12 @@ function requireAdmin(to: import('vue-router').RouteLocationNormalized, from: im
 }
 
 // Global navigation guard :)
-router.beforeEach((to, from, next) => {
-  if (to.meta.requireAdmin) {
-    requireAdmin(to, from, next);
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requireAdmin) {
+//     requireAdmin(to, from, next);
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

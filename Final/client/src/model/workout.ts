@@ -1,8 +1,8 @@
 //InShaAllah
 
 export interface Workout {
-    id: number;
-    name: string; 
+    _id: string;
+    email: string;
     workoutName: string;
     date: string;
     duration: number;

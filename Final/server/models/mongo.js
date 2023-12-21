@@ -1,41 +1,18 @@
-const { MongoClient } = require('mongodb');
+/* B"H
+*/
 
-// MongoDB connection details from environment variables
-const url = process.env.MONGO_URI;
-const dbName = process.env.MONGO_DB_NAME;
-let dbInstance = null;
+const { MongoClient, ObjectId } = require('mongodb');
+const uri = process.env.MONGO_URI;
+const DB_NAME = process.env.MONGO_DB_NAME;
 
-// Function to connect to MongoDB
-async function connectToMongo() {
-    if (dbInstance) {
-        // Return existing db instance if already connected
-        return dbInstance;
-    }
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {});
 
-    try {
-        // Create a new MongoClient and connect
-        const client = new MongoClient(url);
-        await client.connect();
-        console.log("Connected to MongoDB");
-
-        // Assign and return the database instance
-        dbInstance = client.db(dbName);
-        return dbInstance;
-    } catch (error) {
-        console.error("Failed to connect to MongoDB:", error);
-        throw error; // Rethrow to handle it in calling function
-    }
+async function connect() {
+    await client.connect();
+    return client.db(DB_NAME);
 }
 
-// Function to get the database instance
-function getDb() {
-    if (!dbInstance) {
-        throw new Error("Database not connected. Call connectToMongo first.");
-    }
-    return dbInstance;
-}
-
-module.exports = {
-    connectToMongo,
-    getDb
+module.exports = { 
+  connect, ObjectId
 };

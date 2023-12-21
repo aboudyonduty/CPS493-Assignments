@@ -1,44 +1,60 @@
+// express.js
+
+const path = require('path')
 const express = require('express');
-const cors = require('cors');
-const path = require('path');
-require('dotenv').config(); // Load environment variables
-
-const mongoUtil = require('./models/mongo');
-const userRoutes = require('./routes/users');
-const workoutRoutes = require('./routes/workouts');
-const authRoutes = require('./routes/auth');
-
+require('dotenv').config();
+const UsersController = require('./controllers/UsersController');
+const { parseAuthorizationToken, requireUser } = require('./middleware/authorization');
 const app = express();
 
-// Apply middlewares
-app.use(cors()); // Enable CORS for all requests
-app.use(express.json()); // Parse JSON request bodies
+const PORT = process.env.PORT ?? 3000;
 
-// Function to start the Express server
-async function startServer() {
-    try {
-        // Connect to MongoDB
-        await mongoUtil.connectToMongo();
-        console.log("Successfully connected to MongoDB.");
+console.log(`The best class at SUNY New Paltz is ${process.env.BEST_CLASS}`);
 
-        // Define routes
-        app.use('/api/auth', authRoutes);
-        app.use('/api/users', userRoutes);
-        app.use('/api/workouts', workoutRoutes);
+app
 
-        // Serve static files from the Vue frontend app
-        app.use(express.static(path.join(__dirname, '../dist')));
+  .use("/", express.static(path.join(__dirname, "../client/dist/")))
+  .use(express.json())
+  .use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    );
 
-        // Start the server
-        const PORT = process.env.PORT ?? 3000;
-        app.listen(PORT, () => {
-            console.log(`Server running on port at http://localhost:${PORT}`);
-        });
-
-    } catch (error) {
-        console.error('Failed to connect to MongoDB:', error);
-        process.exit(1);
+    if (req.method === "OPTIONS") {
+      return res.status(200).send({});
     }
-}
+    next();
+  })
 
-startServer();
+
+  .use("/api/v1/UsersController",UsersController)
+
+  .get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  const msg = {
+    status: err.code || 500,
+    error: err.message  || "Internal Server Error",
+    isSuccess: false,
+  };
+  res.status(msg.status).json(msg);
+});
+
+
+
+console.log('1: Trying to start server...');
+
+app.listen(PORT, () => {
+    console.log(`2: Server is running at http://localhost:${PORT}`);
+});
+
+console.log('3: End of file, waiting for requests...');

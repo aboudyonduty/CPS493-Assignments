@@ -1,71 +1,42 @@
-const { MongoClient, ObjectId } = require('mongodb');
+// @ts-check
+/* B"H
+*/
 
-// MongoDB connection details from environment variables
-const url = process.env.MONGO_URI;
-const client = new MongoClient(url);
-const dbName = process.env.MONGO_DB_NAME;
-const workoutsCollection = 'workouts';
+const express = require('express');
+const { getAll, getWorkoutsByEmail,addWorkout,deleteWorkout } = require('../models/workouts');
+const { requireUser } = require('../middleware/authorization');
+const router = express.Router();
 
-async function getDb() {
-    await client.connect();
-    return client.db(dbName);
-}
+router.get('/', requireUser(true), (req, res, next) => {
+  res.send(getAll());
+})
 
-exports.getAllWorkouts = async (req, res) => {
-    try {
-        const db = await getDb();
-        // Adjust the query to retrieve only the workouts for the logged-in user or all if admin
-        const query = req.user.role === 'admin' ? {} : { userId: req.user.id };
-        const workouts = await db.collection(workoutsCollection).find(query).toArray();
-        res.json(workouts);
-    } catch (error) {
-        res.status(500).send('Error retrieving workouts');
-    }
-};
+  .get('/getAllWorkouts', (req, res, next) => {
+    getAll()
+      .then(users => res.send(users))
+      .catch(next);
+  })
 
-exports.getWorkout = async (req, res) => {
-    try {
-        const db = await getDb();
-        const workout = await db.collection(workoutsCollection).findOne({ _id: ObjectId(req.params.id), userId: req.user.id });
-        res.json(workout);
-    } catch (error) {
-        res.status(500).send('Error retrieving workout');
-    }
-};
 
-exports.createWorkout = async (req, res) => {
-    try {
-        const newWorkout = { ...req.body, userId: req.user.id }; // Link workout to the user
+  .get('/getWorkoutsByEmail/:email', (req, res, next) => {
+    const { email } = req.params;
+    getWorkoutsByEmail(email)
+      .then(user => res.send(user))
+      .catch(next);
+  })
 
-        const db = await getDb();
-        await db.collection(workoutsCollection).insertOne(newWorkout);
+  .post('/addWorkout', (req, res, next) => {
+    const workout = req.body;
+    addWorkout(workout)
+      .then(() => res.send({ message: 'Workout added' }))
+      .catch(next);
+  })
+  .delete('/deleteWorkout/:id', (req, res, next) => {
+    const { id } = req.params;
+    deleteWorkout(id)
+      .then(() => res.send({ message: 'Workout deleted' }))
+      .catch(next);
+  })
 
-        res.status(201).send('Workout created');
-    } catch (error) {
-        res.status(500).send('Error creating workout');
-    }
-};
 
-exports.updateWorkout = async (req, res) => {
-    try {
-        const updateData = { ...req.body };
-
-        const db = await getDb();
-        await db.collection(workoutsCollection).updateOne({ _id: ObjectId(req.params.id), userId: req.user.id }, { $set: updateData });
-
-        res.send('Workout updated');
-    } catch (error) {
-        res.status(500).send('Error updating workout');
-    }
-};
-
-exports.deleteWorkout = async (req, res) => {
-    try {
-        const db = await getDb();
-        await db.collection(workoutsCollection).deleteOne({ _id: ObjectId(req.params.id), userId: req.user.id });
-
-        res.send('Workout deleted');
-    } catch (error) {
-        res.status(500).send('Error deleting workout');
-    }
-};
+module.exports = router;

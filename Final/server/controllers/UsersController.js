@@ -1,78 +1,55 @@
-const { MongoClient, ObjectId } = require('mongodb');
-const bcrypt = require('bcryptjs');
+// @ts-check
+/* B"H
+*/
 
-// MongoDB connection details from environment variables
-const url = process.env.MONGO_URI;
-const client = new MongoClient(url)
-const dbName = process.env.MONGO_DB_NAME;
-const usersCollection = 'users';
+const express = require('express');
+const { getAll, seed, generateJWT, getUserByEmail } = require('../models/users');
+const { requireUser } = require('../middleware/authorization');
+const router = express.Router();
 
-async function getDb() {
-    await client.connect();
-    return client.db(dbName);
-}
+router.get('/', requireUser(true), (req, res, next) => {
 
-exports.getAllUsers = async (req, res) => {
-    try {
-        const db = await getDb();
-        const users = await db.collection(usersCollection).find({}).toArray();
-        res.json(users.map(user => ({ ...user, password: undefined }))); // Exclude passwords
-    } catch (error) {
-        res.status(500).send('Error retrieving users');
-    }
-};
+  res.send(getAll());
 
-exports.getUser = async (req, res) => {
-    try {
-        const db = await getDb();
-        const user = await db.collection(usersCollection).findOne({ _id: ObjectId(req.params.id) });
+})
+  .post('/seed', (req, res, next) => {
+    seed();
+    res.send({ message: 'Users seeded' });
+  })
+
+  .get('/getAllUsers', (req, res, next) => {
+    getAll()
+      .then(users => res.send(users))
+      .catch(next);
+  })
+
+
+  .get('/getUserByEmail/:email', (req, res, next) => {
+    const { email } = req.params;
+    getUserByEmail(email)
+      .then(user => res.send(user))
+      .catch(next);
+  })
+  .post("/login", (req, res, next) => {
+    const { email, password } = req.body;
+    getAll()
+      .then(async (users) => {
+        const user = users.find(
+          (x) => x.email === email && x.password === password
+        );
         if (user) {
-            res.json({ ...user, password: undefined });
+          const token = await generateJWT(user);
+          const loginData = { token, user };
+
+          const data = { data: loginData, isSuccess: true };
+          res.send(data);
         } else {
-            res.status(404).send('User not found');
+          const data = { data: null, isSuccess: false };
+          res.send(data);
         }
-    } catch (error) {
-        res.status(500).send('Error retrieving user');
-    }
-};
+      })
+      .catch(next);
+  });
 
-exports.createUser = async (req, res) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        const newUser = { ...req.body, password: hashedPassword };
 
-        const db = await getDb();
-        await db.collection(usersCollection).insertOne(newUser);
-
-        res.status(201).send('User created');
-    } catch (error) {
-        res.status(500).send('Error creating user');
-    }
-};
-
-exports.updateUser = async (req, res) => {
-    try {
-        const updateData = { ...req.body };
-        if (updateData.password) {
-            updateData.password = await bcrypt.hash(updateData.password, 12);
-        }
-
-        const db = await getDb();
-        await db.collection(usersCollection).updateOne({ _id: ObjectId(req.params.id) }, { $set: updateData });
-
-        res.send('User updated');
-    } catch (error) {
-        res.status(500).send('Error updating user');
-    }
-};
-
-exports.deleteUser = async (req, res) => {
-    try {
-        const db = await getDb();
-        await db.collection(usersCollection).deleteOne({ _id: ObjectId(req.params.id) });
-
-        res.send('User deleted');
-    } catch (error) {
-        res.status(500).send('Error deleting user');
-    }
-};
+module.exports = router;

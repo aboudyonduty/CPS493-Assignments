@@ -1,39 +1,47 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-          <form class="box" @submit.prevent="handleLogin">
-            <div class="field">
-              <label for="email" class="label">Email</label>
-              <div class="control has-icons-left">
-                <input v-model="email" type="email" placeholder="e.g. bob@example.com" class="input" required>
-                <span class="icon is-small is-left">
-                  <i class="fa fa-envelope"></i>
-                </span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="password" class="label">Password</label>
-              <div class="control has-icons-left">
-                <input v-model="password" type="password" placeholder="*******" class="input" required>
-                <span class="icon is-small is-left">
-                  <i class="fa fa-lock"></i>
-                </span>
-              </div>
-            </div>
-
-            <div class="field">
-              <button type="submit" class="button is-success">
-                Login
-              </button>
-            </div>
-          </form>
+  <div class="hero-body">
+    <div class="column is-half is-offset-one-quarter">
+      <div class="box">
+        <div class="field">
+          <p class="control has-icons-left has-icons-right">
+            <input
+              v-model="email"
+              class="input"
+              type="email"
+              placeholder="Email"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control has-icons-left">
+            <input
+              v-model="password"
+              class="input"
+              type="password"
+              placeholder="Password"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field is-grouped">
+          <p class="control">
+            <button @click="doLogin" class="button is-success">Login</button>
+          </p>
+          <p class="control">
+            <button @click="doSignUp" class="button is-light">Sign Up</button>
+          </p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -48,18 +56,14 @@ const email = ref('');
 const password = ref('');
 const isLoggedIn = ref(false);
 
-onMounted(() => {
-  if (session.user) {
-    isLoggedIn.value = true;
-    // Add logic if needed for when user is already logged in
-  }
-});
 
-const handleLogin = async () => {
-  // Here you'd add your login logic using the login function from useLogin
-  // For example: await login(email.value, password.value);
-  // Redirect after login or handle errors
-};
+const doLogin = () => {
+  login(email.value, password.value);
+}
+
+const doSignUp = () => {
+  //router.push('/signup');
+}
 </script>
 
 <style scoped>
