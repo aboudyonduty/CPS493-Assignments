@@ -1,5 +1,3 @@
-/* B"H
-*/
 import { reactive } from "vue";
 import { useRouter } from "vue-router"
 import * as myFetch from "./myFetch";

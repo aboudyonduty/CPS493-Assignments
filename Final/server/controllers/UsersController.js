@@ -1,7 +1,3 @@
-// @ts-check
-/* B"H
-*/
-
 const express = require('express');
 const { getAll, seed, generateJWT, getUserByEmail } = require('../models/users');
 const { requireUser } = require('../middleware/authorization');
@@ -49,6 +45,16 @@ router.get('/', requireUser(true), (req, res, next) => {
         }
       })
       .catch(next);
+  })
+  .get('/search/:query', async (req, res) => {
+    try {
+      const query = req.params.query;
+      const result = await users.searchUsers(query);
+      res.json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
   });
 
 

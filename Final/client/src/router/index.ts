@@ -4,6 +4,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import WorkoutPage from '../views/WorkoutPage.vue';
 import LoginView from '../views/LoginView.vue';
 import { getSession } from '@/model/session';
+import UserSearchView from '../views/UserSearchView.vue';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,12 @@ const router = createRouter({
       name: "LoginView",
       component: LoginView,
     },
+    {
+      path: "/SearchView",
+      name: "SearchView",
+      component: UserSearchView,
+    }
+
   ],
 });
 

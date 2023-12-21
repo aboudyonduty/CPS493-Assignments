@@ -76,8 +76,23 @@ function verifyJWT(token) {
     });
   })
 }
+const searchUsers = async (query) => {
+  try {
+    const results = await User.find({
+      $or: [
+        { firstName: new RegExp(query, 'i') },
+        { lastName: new RegExp(query, 'i') },
+      ],
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error searching users:', error);
+    throw error; 
+  }
+};
 
 
 module.exports = {
-  getAll, generateJWT, verifyJWT, seed, getUserByEmail
+  getAll, generateJWT, verifyJWT, seed, getUserByEmail,searchUsers
 };

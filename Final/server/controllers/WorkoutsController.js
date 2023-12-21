@@ -1,7 +1,3 @@
-// @ts-check
-/* B"H
-*/
-
 const express = require('express');
 const { getAll, getWorkoutsByEmail,addWorkout,deleteWorkout } = require('../models/workouts');
 const { requireUser } = require('../middleware/authorization');
