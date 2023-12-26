@@ -36,6 +36,7 @@ async function addUser(user) {
   const collection = await getCollection();
   await collection.insertOne(user);
 }
+
 async function deleteUser(id) {
     const collection = await getCollection();
     await collection.deleteOne({_id: ObjectId(id)});
@@ -94,5 +95,5 @@ const searchUsers = async (query) => {
 
 
 module.exports = {
-  getAll, generateJWT, verifyJWT, seed, getUserByEmail,searchUsers
+  getAll, addUser, deleteUser, generateJWT, verifyJWT, seed, getUserByEmail,searchUsers
 };

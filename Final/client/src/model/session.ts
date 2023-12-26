@@ -47,3 +47,26 @@ export function useLogin(){
     }
   }
 }
+export function useSignUp(){
+  const router = useRouter();
+
+  return {
+    async signUp(email: string, password: string, username: string, firstName: string, lastName: string): Promise< User | null> {
+      const response = await api("/UsersController/signUp", { email, password,username,firstName,lastName});
+
+      if(!response.isSuccess){
+        return null;
+      }
+
+      session.user = response.data.user;
+      session.token = response.data.token;
+
+      router.push(session.redirectUrl || "/");
+      return session.user;
+    },
+    logout(){
+      session.user = null;
+      router.push("/LoginView");
+    }
+  }
+}

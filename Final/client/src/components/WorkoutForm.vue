@@ -1,102 +1,143 @@
-<!--InShaAllah-->
-
-<script setup lang="ts">
-import { ref } from 'vue';
-import { getSession } from '@/model/session';
-
-const session = getSession();
-
-const newWorkout = ref({
-  workoutName: "",
-  date: "",
-  duration: 0,
-  calories: 0
-});
-
-const errors = ref([] as string[]);
-
-const emit = defineEmits(['new-workout']);
-
-const addWorkout = () => {
-  errors.value = [];  // reset the errors
-
-  // Validate the form fields
-  if (!newWorkout.value.workoutName) errors.value.push("Workout Name is required.");
-  if (!newWorkout.value.date) errors.value.push("Date is required.");
-  if (!newWorkout.value.duration) errors.value.push("Duration is required.");
-
-  // Only continue if there are no errors
-  if (!errors.value.length) {
-    emit('new-workout', newWorkout.value);
-    newWorkout.value = {workoutName: "", date: "", duration: 0, calories: 0 };
-  }
-};
-</script>
-
 <template>
-  <div class="card has-border-none">
-    <header class="card-header">
-      <p class="card-header-title">
-        Add New Workout
-      </p>
-    </header>
-    <div class="card-content">
-      <div class="content">
-
-        <!-- Display validation errors -->
-        <div v-if="errors.length" class="notification is-light has-text-danger">
-          <p v-for="error in errors" :key="error">{{ error }}</p>
-        </div>
-
-        <!-- Workout Name Input -->
+  <section class="section">
+    <div class="container">
+      <form @submit.prevent="submitWorkout" class="box">
+        <!-- Workout Name -->
         <div class="field">
           <label class="label">Workout Name</label>
-          <div class="control">
-            <input v-model="newWorkout.workoutName" class="input" type="text" placeholder="Name of the Workout" />
+          <div class="control has-icons-left">
+            <input
+              class="input"
+              type="text"
+              placeholder="E.g., Morning Run"
+              v-model="workout.workoutName"
+              required
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-dumbbell"></i>
+            </span>
           </div>
         </div>
 
-        <!-- Date Input -->
+        <!-- Duration Worked Out -->
         <div class="field">
-          <label class="label">Date</label>
+          <label class="label">Duration Worked Out (minutes)</label>
           <div class="control">
-            <input v-model="newWorkout.date" class="input" type="date" placeholder="Date" />
+            <input
+              class="input"
+              type="number"
+              placeholder="Duration"
+              v-model="workout.duration"
+              required
+            />
           </div>
         </div>
 
-        <!-- Duration Input -->
+        <!-- Date Worked Out -->
         <div class="field">
-          <label class="label">Duration (mins)</label>
+          <label class="label">Date Worked Out</label>
           <div class="control">
-            <input v-model="newWorkout.duration" class="input" type="number" placeholder="Duration" />
+            <input class="input" type="date" v-model="workout.date" required />
           </div>
         </div>
 
-        <!-- Calories Input (optional) -->
+        <!-- Calories Burned (optional) -->
         <div class="field">
-          <label class="label">Calories (optional)</label>
+          <label class="label">Calories Burned (optional)</label>
           <div class="control">
-            <input v-model="newWorkout.calories" class="input" type="number" placeholder="Calories" />
+            <input
+              class="input"
+              type="number"
+              placeholder="Calories"
+              v-model="workout.calories"
+            />
           </div>
         </div>
 
-      </div>
+        <!-- Submit Button -->
+        <div class="field">
+          <div class="control">
+            <button class="button is-primary">Add Workout</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <footer class="card-footer">
-      <button class="card-footer-item button is-link" @click="addWorkout">Add Workout</button>
-    </footer>
-  </div>
+  </section>
 </template>
 
-<style scoped>
-.card.has-border-none {
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.field {
-  margin-bottom: 1rem;
-}
-.notification.is-light {
-  background-color: #f5f5f5; 
-}
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { Workout } from '@/model/workout';  // adjust the path as necessary
+
+export default defineComponent({
+  data(): { workout: Workout } {
+    return {
+      workout: {
+        _id: '', // This will typically be assigned by the database, so it might start empty
+        email: '', // Set this from the user's session or authentication context
+        workoutName: '',
+        date: '',
+        duration: 0,
+        calories: 0
+      }
+    };
+  },
+  methods: {
+    async submitWorkout() {
+  try {
+    const response = await fetch('/api/v1/workouts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.workout)
+    });
+
+    if (response.ok) {
+      console.log('Workout added successfully!');
+      // Handle success - reset the form or show a success message
+    } else {
+      console.error('Failed to add workout:', await response.json());
+      // Handle server errors
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+    // Handle network errors
+  }
+
+
+      // Prepare the request options
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.workout)
+      };
+
+      try {
+        // Send the POST request to your server endpoint
+        const response = await fetch('/addWorkout', requestOptions);
+
+        // Check if the request was successful
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log(responseData); // Log or handle the response from the server
+          alert('Workout added successfully!');
+          // Reset the form or handle the successful state
+          this.workout = { name: '', duration: '', date: '', calories: '' };
+        } else {
+          // Handle server errors (e.g., response status is 5xx or 4xx)
+          const errorData = await response.json();
+          console.error('Failed to add workout:', errorData);
+          alert('Failed to add workout. Please try again.');
+        }
+      } catch (error) {
+        // Handle network errors
+        console.error('Network error:', error);
+        alert('Failed to add workout. Please check your connection and try again.');
+      }
+    }
+  }
+});
+</script>
+
+<style>
+/* Add any custom styles or overrides here */
 </style>

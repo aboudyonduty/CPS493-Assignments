@@ -21,11 +21,15 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
 
-  .post('/addWorkout', (req, res, next) => {
-    const workout = req.body;
-    addWorkout(workout)
-      .then(() => res.send({ message: 'Workout added' }))
-      .catch(next);
+  .post('/addWorkout', async (req, res) => {
+    try {
+      const workout = req.body; // Your workout data from the client
+      await addWorkout(workout); // Assuming addWorkout is a method from workouts.js
+      res.status(200).send('Workout added successfully');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error adding workout');
+    }
   })
   .delete('/deleteWorkout/:id', (req, res, next) => {
     const { id } = req.params;

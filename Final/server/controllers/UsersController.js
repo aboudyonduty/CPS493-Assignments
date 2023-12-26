@@ -19,6 +19,16 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
 
+  .post('/signUp', async (req, res) => {
+    try {
+      const user = req.body; // Your user data from the client
+      await addUser(user); // Assuming addUser is a method from users.js
+      res.status(200).send('User added successfully');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error adding user');
+    }
+  })
 
   .get('/getUserByEmail/:email', (req, res, next) => {
     const { email } = req.params;

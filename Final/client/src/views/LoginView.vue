@@ -47,13 +47,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getSession, useLogin } from '@/model/session';
+import { getSession, useLogin, useSignUp} from '@/model/session';
 
 const router = useRouter();
 const session = getSession();
 const { login } = useLogin();
+const { signUp } = useSignUp();
 const email = ref('');
 const password = ref('');
+const username = ref('');
+const firstName = ref('');
+const lastName = ref('');
+
 const isLoggedIn = ref(false);
 
 
@@ -62,7 +67,7 @@ const doLogin = () => {
 }
 
 const doSignUp = () => {
-  //router.push('/signup');
+  signUp(email.value, password.value, username.value,firstName.value, lastName.value);
 }
 </script>
 

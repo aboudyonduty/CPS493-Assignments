@@ -1,9 +1,10 @@
 // express.js
 
-const path = require('path')
+const path = require('path');
 const express = require('express');
 require('dotenv').config();
 const UsersController = require('./controllers/UsersController');
+const WorkoutsController = require('./controllers/WorkoutsController'); // Ensure this is the correct path
 const { parseAuthorizationToken, requireUser } = require('./middleware/authorization');
 const app = express();
 
@@ -12,11 +13,10 @@ const PORT = process.env.PORT ?? 3000;
 console.log(`The best class at SUNY New Paltz is ${process.env.BEST_CLASS}`);
 
 app
-
   .use("/", express.static(path.join(__dirname, "../client/dist/")))
   .use(express.json())
   .use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");  // Adjust if your client is on a different URL
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
@@ -32,8 +32,10 @@ app
     next();
   })
 
+  .use("/api/v1/workouts", WorkoutsController)
 
-  .use("/api/v1/UsersController",UsersController)
+
+  .use("/api/v1/UsersController", UsersController)
 
   .get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));
@@ -48,8 +50,6 @@ app.use((err, req, res, next) => {
   };
   res.status(msg.status).json(msg);
 });
-
-
 
 console.log('1: Trying to start server...');
 

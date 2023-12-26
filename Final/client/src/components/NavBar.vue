@@ -4,6 +4,7 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
+import SignUpBadge from './SignUpBadge.vue';
 
 const isActive = ref(false);
 
@@ -36,6 +37,9 @@ const isActive = ref(false);
       <div class="navbar-end">
         <div class="navbar-item">
           <LoginBadge />
+        </div>
+        <div class="navbar-item">
+          <SignUpBadge />
         </div>
       </div>
     </div>
