@@ -12,11 +12,11 @@
         <input v-model="newUser.email" placeholder="Email" />
         <input v-model="newUser.username" placeholder="Username" />
         <input v-model="newUser.password" type="password" placeholder="Password" />
-        <!-- <select v-model="newUser.role">
+       <select v-model="newUser.role">
           <option value="user">User</option>
           <option value="admin">Admin</option>
-        </select> -->
-        <!-- <button class="button is-primary" @click="addUser">Add User</button> -->
+        </select> 
+        <button class="button is-primary" @click="addUser">Add User</button> 
       </div>
 
       <!-- User List -->
@@ -43,16 +43,12 @@
             <span class="user-label">Role:</span>
             <span class="user-data">{{ user.role }}</span>
           </div>
+        
           <!-- Delete User -->
-          <button class="button is-danger" @click="deleteUser(user.email)">Delete</button>
+          <button class="button is-danger" @click="deleteExistingUser(user.email)">Delete</button>
         </div>
       </div>
     </div>
-
-    <div v-else-if="isLoggedIn">
-      <p>You are logged in, but you need administrative privileges to view this page.</p>
-    </div>
-
     <div v-else>
       <p>You must be logged in and have administrative privileges to view this page.</p>
     </div>
@@ -60,89 +56,44 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
-import { getUsers, type User } from '@/model/users';
-import { getSession } from '@/model/session'; 
-const session = getSession();
-const USER_STORAGE_KEY = 'users-data';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getSession,useSignUp } from '@/model/session';
+import {deleteUser, getUsers} from '@/model/users';
 
-const isAdmin = ref(false);
-const isLoggedIn = ref(false);
-const users = ref<User[]>([]);
-
+const router = useRouter();
+const { signUp } = useSignUp();
+const user = ref(getSession());
+const users = ref([]);
 const newUser = ref({
   firstName: '',
   lastName: '',
   email: '',
   username: '',
   password: '',
+  role: '',
 });
 
-onMounted(() => {
-  isLoggedIn.value = !!session.user;
-  // isAdmin.value = session.user && session.user.role === 'admin';
-
-  const storedUsers = localStorage.getItem(USER_STORAGE_KEY);
-  console.log(storedUsers);
-  if (storedUsers) {
-    users.value = JSON.parse(storedUsers);
-  } else {
-    const fetchedUsers = getUsers();
-    //users.value = fetchedUsers;
-    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(fetchedUsers));
-  }
-});
-/*onMounted(() => {
-  const session = getSession();
-  isLoggedIn.value = !!session.user;
-  isAdmin.value = session.user && session.user.role === 'admin';
-
-  const storedUsers = localStorage.getItem(USER_STORAGE_KEY);
-  if (storedUsers) {
-    users.value = JSON.parse(storedUsers);
-  } else {
-    const fetchedUsers = getUsers();
-    users.value = fetchedUsers;
-    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(fetchedUsers));
-  }
-// });*/
-
-// const addUser = () => {
-//   const existingUser = users.value.find(user => user.email === newUser.value.email);
-//   if (existingUser) {
-//     alert('A user with this email already exists.');
-//     return;
-//   }
-
-//   users.value.unshift({
-//     ...newUser.value
-//   });
-
-//   localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(users.value));
-
-//   // Reset the form
-//   newUser.value = {
-//     firstName: '',
-//     lastName: '',
-//     email: '',
-//     username: '',
-//     password: '',
-//     role: 'user'
-//   };
-// };
-
-const deleteUser = (userEmail: string) => {
-  if (window.confirm('Are you sure you want to delete this user?')) {
-    users.value = users.value.filter(user => user.email !== userEmail);
-    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(users.value));
-  }
+const isAdmin = user.value?.user.role === 'admin';
+const addUser = () => {
+};
+const deleteExistingUser = async (email: string) => {
+  await displayUsers();
+};
+const displayUsers = async () => {
+  getUsers().then((data) => {
+    users.value = data;
+  });
 };
 
-watch(users, (newUsers) => {
-  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUsers));
+onMounted(() => {
+  if (!isAdmin) {
+    router.push({ name: 'HomeView' });
+  } else {
+    displayUsers();
+  }
 });
 </script>
-
 <style scoped>
 /* Your CSS styles here */
 </style>

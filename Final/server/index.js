@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 require('dotenv').config();
 const UsersController = require('./controllers/UsersController');
-const WorkoutsController = require('./controllers/WorkoutsController'); // Ensure this is the correct path
+const WorkoutsController = require('./controllers/WorkoutsController');
 const { parseAuthorizationToken, requireUser } = require('./middleware/authorization');
 const app = express();
 

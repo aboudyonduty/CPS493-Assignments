@@ -16,11 +16,6 @@ onMounted(() => {
 const navigateToSignUp = () => {
   router.push({ name: 'SignUpView' });
 };
-
-// LogOut
-const doLogout = () => {
-  logout();
-};
 </script>
 
 

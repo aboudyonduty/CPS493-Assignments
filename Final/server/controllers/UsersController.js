@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll, seed, generateJWT, getUserByEmail } = require('../models/users');
+const { getAll, seed, generateJWT, getUserByEmail, addUser } = require('../models/users');
 const { requireUser } = require('../middleware/authorization');
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
 
-  .post('/signUp', async (req, res) => {
+  .post('/addUser', async (req, res) => {
     try {
       const user = req.body; // Your user data from the client
       await addUser(user); // Assuming addUser is a method from users.js
@@ -28,6 +28,12 @@ router.get('/', requireUser(true), (req, res, next) => {
       console.error(error);
       res.status(500).send('Error adding user');
     }
+  })
+  .delete('/deleteUser/:email', (req, res, next) => {
+    const { email } = req.params;
+    deleteUser(email)
+      .then(() => res.send({ message: 'User deleted' }))
+      .catch(next);
   })
 
   .get('/getUserByEmail/:email', (req, res, next) => {

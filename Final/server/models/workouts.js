@@ -3,6 +3,7 @@
  * @typedef {Object} BaseWorkout
  * @property {string} _id
  * @property {string} email
+ * @property {string} workoutName
  * @property {string} date
  * @property {number} duration
  * @property {number} calories

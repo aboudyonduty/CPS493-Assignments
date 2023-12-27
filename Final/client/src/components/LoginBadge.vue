@@ -36,11 +36,6 @@ const doLogout = () => {
       </a>
     </small>
   </div>
-  <div class="buttons" v-else>
-    <button class="button" @click="navigateToLogin">
-      <span>Log in</span>
-    </button>
-  </div>
 </template>
 
 

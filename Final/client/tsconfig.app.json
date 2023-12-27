@@ -1,6 +1,7 @@
 {
   "files": [
-    "src/data/users.json"
+    "src/main.ts",
+    "src/shims-vue.d.ts"
   ],
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],

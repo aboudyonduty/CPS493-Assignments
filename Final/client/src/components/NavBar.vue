@@ -14,8 +14,7 @@ const isActive = ref(false);
   <nav class="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <RouterLink class="navbar-item" to="/">
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="32" height="32" />
-
+        <img alt="Vue logo" class="logo" src="@/assets/SuperSaiyanFitness.png" width="32" height="32" />
       </RouterLink>
 
       <a role="button" class="navbar-burger burger" :class="{ 'is-active': isActive }" @click="isActive = !isActive" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -37,9 +36,6 @@ const isActive = ref(false);
       <div class="navbar-end">
         <div class="navbar-item">
           <LoginBadge />
-        </div>
-        <div class="navbar-item">
-          <SignUpBadge />
         </div>
       </div>
     </div>

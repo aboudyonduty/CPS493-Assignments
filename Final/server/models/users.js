@@ -11,7 +11,7 @@
  * @property {string} role
  */
 
-const data = require("../data/users.json");
+//const data = require("../data/users.json");
 
 const jwt = require('jsonwebtoken');
 
@@ -38,9 +38,9 @@ async function addUser(user) {
 }
 
 async function deleteUser(id) {
-    const collection = await getCollection();
-    await collection.deleteOne({_id: ObjectId(id)});
-    }
+  const collection = await getCollection();
+  await collection.deleteOne({_id: ObjectId(id)});
+  }
 
 async function getUserByEmail(email) {
   const collection = await getCollection();

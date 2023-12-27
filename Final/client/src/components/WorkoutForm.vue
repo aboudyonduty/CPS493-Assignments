@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Workout } from '@/model/workout';  // adjust the path as necessary
+import { Workout } from '@/model/workouts';  // adjust the path as necessary
 
 export default defineComponent({
   data(): { workout: Workout } {

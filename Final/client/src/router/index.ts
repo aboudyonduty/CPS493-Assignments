@@ -42,6 +42,7 @@ const router = createRouter({
       path: "/SearchView",
       name: "SearchView",
       component: UserSearchView,
+      beforeEnter: requireLogin
     }
 
   ],
@@ -51,7 +52,7 @@ function requireLogin(to: import('vue-router').RouteLocationNormalized, from: im
   const session = getSession();
   if (!session.user) {
     session.redirectUrl = to.fullPath;
-    next('/login');
+    next('/LoginView');
   } else {
     next();
   }

@@ -1,37 +1,53 @@
 import { reactive } from "vue";
-import { useRouter } from "vue-router"
+import { useRouter } from "vue-router";
 import * as myFetch from "./myFetch";
-import { type User} from "./users";
+import { type User } from "./users";
+import { type Workout } from "./workouts";
+import Toastify from 'toastify-js'; // Ensure Toastify is installed and imported
 
 const session = reactive({
   user: null as User | null,
+  workout: null as Workout | null,
   token: null as string | null,
   redirectUrl: null as string | null,
-
 })
 
-export function api(action: string, body?: unknown, method?: string){
+export function api(action: string, body?: unknown, method?: string) {
   return myFetch.api(`${action}`, body, method)
-    .catch(err=> showError(err))
-}
-export function showError(err: any){
-  console.error(err);
-  alert(err.message || err);
+    .catch(err => showError(err))
 }
 
-export function getSession(){
+export function showError(err: any) {
+  console.error(err);
+  Toastify({
+    text: err.message || "An unexpected error occurred.",
+    duration: 3000,  // Adjust time as needed
+    close: true,
+    gravity: "bottom",  // Toast appears at the bottom
+    position: "center",  // Centered at the bottom
+    backgroundColor: "rgba(0, 0, 0, 0.5)",  // Semi-transparent dark background for minimal look
+    className: "info",
+    stopOnFocus: true,
+    style: {
+      borderRadius: '3px',  // Rounded corners for a softer look
+      fontSize: '14px',  // Smaller font size for less intrusion
+    }
+  }).showToast();
+}
+export function getSession() {
   return session;
 }
 
-
-export function useLogin(){
+export function useLogin() {
   const router = useRouter();
-
+ 
   return {
-    async login(email: string, password: string): Promise< User | null> {
+    async login(email: string, password: string): Promise<User | null> {
       const response = await api("/UsersController/login", { email, password });
 
-      if(!response.isSuccess){
+      if (!response.isSuccess) {
+        // Show an error toast if login is not successful
+        showError({ message: "Invalid credentials. Please try again." });
         return null;
       }
 
@@ -41,20 +57,23 @@ export function useLogin(){
       router.push(session.redirectUrl || "/");
       return session.user;
     },
-    logout(){
+    logout() {
       session.user = null;
       router.push("/LoginView");
     }
   }
 }
-export function useSignUp(){
+
+export function useSignUp() {
   const router = useRouter();
 
   return {
-    async signUp(email: string, password: string, username: string, firstName: string, lastName: string): Promise< User | null> {
-      const response = await api("/UsersController/signUp", { email, password,username,firstName,lastName});
+    async signUp(user: User): Promise<User | null> {
+      const response = await api("/UsersController/addUser", { user });
 
-      if(!response.isSuccess){
+      if (!response.isSuccess) {
+        // Show an error toast if login is not successful
+        showError({ message: "Invalid credentials. Please try again." });
         return null;
       }
 
@@ -64,9 +83,35 @@ export function useSignUp(){
       router.push(session.redirectUrl || "/");
       return session.user;
     },
-    logout(){
+    logout() {
       session.user = null;
       router.push("/LoginView");
     }
   }
+
+}
+
+export function useAddWorkout() {
+  const router = useRouter();
+
+  return {
+    async addWorkout(workout: Workout): Promise<Workout | null> {
+      const response = await api("/WorkoutsController/addWorkout", { workout });
+
+      if (!response.isSuccess) {
+        // Show an error toast if login is not successful
+        showError({ message: "Invalid credentials. Please try again." });
+        return null;
+      }
+      session.workout = response.data.workout;
+
+      router.push(session.redirectUrl || "/");
+      return workout;
+    },
+    logout() {
+      session.user = null;
+      router.push("/LoginView");
+    }
+  }
+
 }
