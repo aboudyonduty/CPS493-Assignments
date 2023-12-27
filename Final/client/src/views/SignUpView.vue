@@ -11,7 +11,7 @@
               <div class="column field">
                 <label class="label">First Name</label>
                 <div class="control has-icons-left">
-                  <input class="input" type="text" placeholder="First Name" v-model="user.firstName" required>
+                  <input class="input" type="text" placeholder="First Name" v-model="firstName" required>
                   <span class="icon is-small is-left">
                     <i class="fas fa-user"></i>
                   </span>
@@ -21,7 +21,7 @@
               <div class="column field">
                 <label class="label">Last Name</label>
                 <div class="control has-icons-left">
-                  <input class="input" type="text" placeholder="Last Name" v-model="user.lastName" required>
+                  <input class="input" type="text" placeholder="Last Name" v-model="lastName" required>
                   <span class="icon is-small is-left">
                     <i class="fas fa-user"></i>
                   </span>
@@ -34,7 +34,7 @@
               <div class="column field">
                 <label class="label">Username</label>
                 <div class="control has-icons-left">
-                  <input class="input" type="text" placeholder="Username" v-model="user.username" required>
+                  <input class="input" type="text" placeholder="Username" v-model="username" required>
                   <span class="icon is-small is-left">
                     <i class="fas fa-user-circle"></i>
                   </span>
@@ -44,7 +44,7 @@
               <div class="column field">
                 <label class="label">Email</label>
                 <div class="control has-icons-left">
-                  <input class="input" type="email" placeholder="Email" v-model="user.email" required>
+                  <input class="input" type="email" placeholder="Email" v-model="email" required>
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -57,7 +57,7 @@
               <div class="column field">
                 <label class="label">Password</label>
                 <div class="control has-icons-left">
-                  <input class="input" type="password" placeholder="Password" v-model="user.password" required>
+                  <input class="input" type="password" placeholder="Password" v-model="password" required>
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>
@@ -96,27 +96,33 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { type User} from '@/model/users';
 import { useRouter } from 'vue-router';
 import { useSignUp } from '@/model/session';
 
 const router = useRouter();
 const { signUp } = useSignUp();
-const user = ref({
-  firstName: '',
-  lastName: '',
-  username: '',
-  email: '',
-  password: '',
-});
+const firstName = ref('');
+const lastName = ref('');
+const username = ref('');
+const email = ref('');
+const password = ref('');
 const verifyPassword = ref('');
 
 const submitSignUp = () => {
-  if (user.value.password !== verifyPassword.value) {
-    alert('Passwords do not match!');
-    return;
-  }
+  const user: User = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    username: username.value,
+    email: email.value,
+    password: password.value,
+    role: 'user',
+  };
+  signUp(user);
 
-  signUp({ ...user.value, _id: '', role: 'user' });
+  email.value = "";
+  password.value = "";
+  
 };
 
 const goToLoginPage = () => {

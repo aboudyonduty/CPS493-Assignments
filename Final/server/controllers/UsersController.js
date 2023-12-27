@@ -19,15 +19,13 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
 
-  .post('/addUser', async (req, res) => {
-    try {
-      const user = req.body; // Your user data from the client
-      await addUser(user); // Assuming addUser is a method from users.js
-      res.status(200).send('User added successfully');
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Error adding user');
-    }
+  .post("/addUser", (req, res, next) => {
+    addUser(req.body)
+      .then((x) => {
+        const data = { data: x, isSuccess: true };
+        res.send(data);
+      })
+      .catch(next);
   })
   .delete('/deleteUser/:email', (req, res, next) => {
     const { email } = req.params;

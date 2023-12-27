@@ -3,7 +3,7 @@
 import {api} from "./session";
 
 export interface User {
-  _id: string;
+  _id?: string;
   id?: number;
   firstName: string;
   lastName: string;

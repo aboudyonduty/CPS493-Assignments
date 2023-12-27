@@ -1,7 +1,6 @@
 
 /**
  * @typedef {Object} BaseUser
- * @property {string} _id
  * @property {number} id
  * @property {string} firstName
  * @property {string} lastName
@@ -33,8 +32,9 @@ async function getAll() {
 }
 
 async function addUser(user) {
-  const collection = await getCollection();
-  await collection.insertOne(user);
+  const col = await getCollection();
+  const result = await col.insertOne(user);
+  return result
 }
 
 async function deleteUser(id) {
