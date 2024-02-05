@@ -7,7 +7,6 @@ import Toastify from 'toastify-js'; // Ensure Toastify is installed and imported
 
 const session = reactive({
   user: null as User | null,
-  workout: null as Workout | null,
   token: null as string | null,
   redirectUrl: null as string | null,
 })
@@ -69,7 +68,7 @@ export function useSignUp() {
 
   return {
     async signUp(user: User): Promise<User | null> {
-      const response = await api("/UsersController/addUser", { user });
+      const response = await api("/UsersController/addUser", user);
 
       if (!response.isSuccess) {
         // Show an error toast if login is not successful
@@ -88,30 +87,4 @@ export function useSignUp() {
       router.push("/LoginView");
     }
   }
-
-}
-
-export function useAddWorkout() {
-  const router = useRouter();
-
-  return {
-    async addWorkout(workout: Workout): Promise<Workout | null> {
-      const response = await api("/WorkoutsController/addWorkout", { workout });
-
-      if (!response.isSuccess) {
-        // Show an error toast if login is not successful
-        showError({ message: "Invalid credentials. Please try again." });
-        return null;
-      }
-      session.workout = response.data.workout;
-
-      router.push(session.redirectUrl || "/");
-      return workout;
-    },
-    logout() {
-      session.user = null;
-      router.push("/LoginView");
-    }
-  }
-
 }

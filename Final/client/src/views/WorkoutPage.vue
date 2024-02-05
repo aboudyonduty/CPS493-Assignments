@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted } from 'vue';
-import { type Workout } from '@/model/workout';
+import { type Workout } from '@/model/workouts';
 import { getSession } from '@/model/session';
 import WorkoutForm from '@/components/WorkoutForm.vue';
 

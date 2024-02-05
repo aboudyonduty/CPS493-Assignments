@@ -33,8 +33,17 @@ async function getAll() {
 
 async function addUser(user) {
   const col = await getCollection();
+
+  // Find the maximum id value in the collection
+  const maxIdUser = await col.find().sort({id: -1}).limit(1).toArray();
+  const maxId = maxIdUser.length > 0 ? maxIdUser[0].id : 0;
+
+  // Assign the next id to the new user
+  user.id = maxId + 1;
+
+  // Insert the new user
   const result = await col.insertOne(user);
-  return result
+  return result;
 }
 
 async function deleteUser(id) {
@@ -42,17 +51,10 @@ async function deleteUser(id) {
   await collection.deleteOne({_id: ObjectId(id)});
   }
 
-async function getUserByEmail(email) {
-  const collection = await getCollection();
-  return await collection.findOne({ email });
-}
-
 async function seed() {
   const collection = await getCollection();
   await collection.insertMany(data.users);
 }
-
-
 
 function generateJWT(user) {
   return new Promise((resolve, reject) => {
@@ -95,5 +97,5 @@ const searchUsers = async (query) => {
 
 
 module.exports = {
-  getAll, addUser, deleteUser, generateJWT, verifyJWT, seed, getUserByEmail,searchUsers
+  getAll, addUser, deleteUser, generateJWT, verifyJWT, seed,searchUsers
 };

@@ -27,17 +27,10 @@ router.get('/', requireUser(true), (req, res, next) => {
       })
       .catch(next);
   })
-  .delete('/deleteUser/:email', (req, res, next) => {
-    const { email } = req.params;
-    deleteUser(email)
+  .delete('/deleteUser/:id', (req, res, next) => {
+    const { id } = req.params;
+    deleteUser(id)
       .then(() => res.send({ message: 'User deleted' }))
-      .catch(next);
-  })
-
-  .get('/getUserByEmail/:email', (req, res, next) => {
-    const { email } = req.params;
-    getUserByEmail(email)
-      .then(user => res.send(user))
       .catch(next);
   })
   .post("/login", (req, res, next) => {

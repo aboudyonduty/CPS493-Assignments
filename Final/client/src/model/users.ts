@@ -9,7 +9,8 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
-  role: "admin" | "user";
+  role: string;
+  //role: "admin" | "user";
   username: string;
   token?: string;
 }
@@ -18,7 +19,7 @@ export async function getUsers(): Promise< User[]> {
   return api("/UsersController/getAllUsers"); 
 }
 export async function addUser(user: User): Promise<User> {
-  return api("/UsersController/addUser", { user });
+  return api("/UsersController/addUser",  user );
 }
 export async function deleteUser(user: User): Promise<User> {
   return api("/UsersController/deleteUser", {  });

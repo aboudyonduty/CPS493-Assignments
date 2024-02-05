@@ -16,7 +16,7 @@
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select> 
-        <button class="button is-primary" @click="addUser">Add User</button> 
+        <button class="button is-primary" @click="addNewUser">Add User</button> 
       </div>
 
       <!-- User List -->
@@ -45,7 +45,7 @@
           </div>
         
           <!-- Delete User -->
-          <button class="button is-danger" @click="deleteExistingUser(user.email)">Delete</button>
+          <!--<button class="button is-danger" @click="deleteExistingUser(user.id)">Delete</button>-->
         </div>
       </div>
     </div>
@@ -57,47 +57,41 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
+import { getSession } from '@/model/session';
 import { useRouter } from 'vue-router';
-import { getSession,useSignUp } from '@/model/session';
-import {deleteUser, getUsers} from '@/model/users';
+import { type User, addUser, deleteUser, getUsers } from '@/model/users';
 
 const router = useRouter();
-const { signUp } = useSignUp();
-const user = ref(getSession());
-const users = ref([]);
-const newUser = ref({
+const users = ref<User[]>();
+
+const newUser = ref<User>({
+  id: 0,
   firstName: '',
   lastName: '',
   email: '',
   username: '',
   password: '',
-  role: '',
+  role: "",
 });
 
-const isAdmin = user.value?.user.role === 'admin';
-const addUser = () => {
-};
-const deleteExistingUser = async (email: string) => {
-  await displayUsers();
-};
-const displayUsers = async () => {
-  getUsers().then((data) => {
-    users.value = data;
-  });
-};
+const session = getSession();
+const isAdmin = session.user?.role === 'admin';
 
-onMounted(() => {
-  if (!isAdmin) {
-    router.push({ name: 'HomeView' });
-  } else {
-    displayUsers();
+onMounted(async () => {
+  if (isAdmin) {
+    users.value = await getUsers();
   }
 });
-</script>
-<style scoped>
-/* Your CSS styles here */
-</style>
 
+
+// Delete an existing user
+const addNewUser = async () => {
+  await addUser(newUser.value);
+  users.value = await getUsers();
+};
+
+// Get the current user from the session
+</script>
 
 <style scoped>
 .container {
