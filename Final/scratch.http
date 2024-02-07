@@ -1,0 +1,19 @@
+@host = http://localhost:3000
+
+
+###
+POST {{host}}/api/v1/UsersController/seed
+# Add more POST requests for other users in your users.json file
+
+###
+POST {{host}}/api/v1/UsersController/login
+Content-Type: application/json
+
+{
+  "email": "aoali726@gmail.com",
+  "password": "9uQFF1Lh"
+ }
+
+
+###
+GET {{host}}/api/v1/UsersController/getAllUsers
