@@ -45,7 +45,7 @@
           </div>
         
           <!-- Delete User -->
-          <!--<button class="button is-danger" @click="deleteExistingUser(user.id)">Delete</button>-->
+          <!-- <button class="button is-danger" @click="deleteExistingUser(user.id)">Delete</button> -->
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
 import { ref, onMounted } from 'vue';
 import { getSession } from '@/model/session';
 import { useRouter } from 'vue-router';
-import { type User, addUser, deleteUser, getUsers } from '@/model/users';
+import { type User, addUser, getUsers } from '@/model/users';
 
 const router = useRouter();
 const users = ref<User[]>();
@@ -84,13 +84,12 @@ onMounted(async () => {
 });
 
 
-// Delete an existing user
+// Add a user
 const addNewUser = async () => {
   await addUser(newUser.value);
   users.value = await getUsers();
 };
 
-// Get the current user from the session
 </script>
 
 <style scoped>

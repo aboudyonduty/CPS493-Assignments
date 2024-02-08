@@ -10,7 +10,7 @@
               class="input"
               type="text"
               placeholder="E.g., Morning Run"
-              v-model="workout.workoutName"
+              v-model="workoutName"
               required
             />
             <span class="icon is-small is-left">
@@ -27,7 +27,7 @@
               class="input"
               type="number"
               placeholder="Duration"
-              v-model="workout.duration"
+              v-model="duration"
               required
             />
           </div>
@@ -37,7 +37,7 @@
         <div class="field">
           <label class="label">Date Worked Out</label>
           <div class="control">
-            <input class="input" type="date" v-model="workout.date" required />
+            <input class="input" type="date" v-model="date" required />
           </div>
         </div>
 
@@ -49,7 +49,7 @@
               class="input"
               type="number"
               placeholder="Calories"
-              v-model="workout.calories"
+              v-model="calories"
             />
           </div>
         </div>
@@ -65,77 +65,42 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { Workout } from '@/model/workouts';  // adjust the path as necessary
+<script lang="ts" setup>
+import { ref} from 'vue';
+import { getSession } from '@/model/session';
+import { type Workout, addWorkout, getWorkouts } from '@/model/workouts';
 
-export default defineComponent({
-  data(): { workout: Workout } {
-    return {
-      workout: {
-        _id: '', // This will typically be assigned by the database, so it might start empty
-        email: '', // Set this from the user's session or authentication context
-        workoutName: '',
-        date: '',
-        duration: 0,
-        calories: 0
-      }
-    };
-  },
-  methods: {
-    async submitWorkout() {
-  try {
-    const response = await fetch('/api/v1/workouts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.workout)
-    });
+const session = getSession();
+const workouts = ref<Workout[]>();
 
-    if (response.ok) {
-      console.log('Workout added successfully!');
-      // Handle success - reset the form or show a success message
-    } else {
-      console.error('Failed to add workout:', await response.json());
-      // Handle server errors
-    }
-  } catch (error) {
-    console.error('Network error:', error);
-    // Handle network errors
-  }
-
-
-      // Prepare the request options
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(this.workout)
-      };
-
-      try {
-        // Send the POST request to your server endpoint
-        const response = await fetch('/addWorkout', requestOptions);
-
-        // Check if the request was successful
-        if (response.ok) {
-          const responseData = await response.json();
-          console.log(responseData); // Log or handle the response from the server
-          alert('Workout added successfully!');
-          // Reset the form or handle the successful state
-          this.workout = { name: '', duration: '', date: '', calories: '' };
-        } else {
-          // Handle server errors (e.g., response status is 5xx or 4xx)
-          const errorData = await response.json();
-          console.error('Failed to add workout:', errorData);
-          alert('Failed to add workout. Please try again.');
-        }
-      } catch (error) {
-        // Handle network errors
-        console.error('Network error:', error);
-        alert('Failed to add workout. Please check your connection and try again.');
-      }
-    }
-  }
+const id = session.user?.id || 0;
+const workoutName = ref("");
+const duration = ref(0);
+const date = ref("");
+const calories = ref(0);
+const newWorkout = ({
+  id: id,
+  workoutName: workoutName.value,
+  duration: duration.value,
+  date: date.value,
+  calories: calories.value,
+  email: session.user?.email || "",
 });
+
+
+const submitWorkout = () => {
+  const workout: Workout = {
+    id: id,
+    workoutName: workoutName.value,
+    duration: duration.value,
+    date: date.value,
+    calories: calories.value,
+    email: session.user?.email || "",
+  };
+  addWorkout(workout);
+};
+
+
 </script>
 
 <style>

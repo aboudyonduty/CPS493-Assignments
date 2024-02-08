@@ -1,7 +1,7 @@
 
 /**
  * @typedef {Object} BaseWorkout
- * @property {string} _id
+ * @property {number} id
  * @property {string} email
  * @property {string} workoutName
  * @property {string} date
@@ -11,6 +11,8 @@
 
 
 const { connect } = require('./mongo');
+
+const { ObjectId } = require('./mongo');
 
 const collectionName = 'Workouts';
 async function getCollection() {

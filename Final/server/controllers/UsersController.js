@@ -27,12 +27,8 @@ router.get('/', requireUser(true), (req, res, next) => {
       })
       .catch(next);
   })
-  .delete('/deleteUser/:id', (req, res, next) => {
-    const { id } = req.params;
-    deleteUser(id)
-      .then(() => res.send({ message: 'User deleted' }))
-      .catch(next);
-  })
+  
+  
   .post("/login", (req, res, next) => {
     const { email, password } = req.body;
     getAll()

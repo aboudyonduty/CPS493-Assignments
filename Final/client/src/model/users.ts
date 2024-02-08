@@ -1,7 +1,6 @@
 //InShaAllah
 
 import {api} from "./session";
-
 export interface User {
   _id?: string;
   id?: number;
@@ -20,9 +19,6 @@ export async function getUsers(): Promise< User[]> {
 }
 export async function addUser(user: User): Promise<User> {
   return api("/UsersController/addUser",  user );
-}
-export async function deleteUser(user: User): Promise<User> {
-  return api("/UsersController/deleteUser", {  });
 }
 export async function getUserByEmail(email: string): Promise<User> {
   return api(`/UsersController/getUserByEmail/${email}`);

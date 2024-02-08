@@ -10,7 +10,6 @@
  * @property {string} role
  */
 
-//const data = require("../data/users.json");
 
 const jwt = require('jsonwebtoken');
 
@@ -32,24 +31,20 @@ async function getAll() {
 }
 
 async function addUser(user) {
-  const col = await getCollection();
+  const collection = await getCollection();
 
   // Find the maximum id value in the collection
-  const maxIdUser = await col.find().sort({id: -1}).limit(1).toArray();
+  const maxIdUser = await collection.find().sort({id: -1}).limit(1).toArray();
   const maxId = maxIdUser.length > 0 ? maxIdUser[0].id : 0;
 
   // Assign the next id to the new user
   user.id = maxId + 1;
 
   // Insert the new user
-  const result = await col.insertOne(user);
+  const result = await collection.insertOne(user);
   return result;
 }
 
-async function deleteUser(id) {
-  const collection = await getCollection();
-  await collection.deleteOne({_id: ObjectId(id)});
-  }
 
 async function seed() {
   const collection = await getCollection();
@@ -97,5 +92,5 @@ const searchUsers = async (query) => {
 
 
 module.exports = {
-  getAll, addUser, deleteUser, generateJWT, verifyJWT, seed,searchUsers
+  getAll, addUser, generateJWT, verifyJWT, seed,searchUsers
 };
