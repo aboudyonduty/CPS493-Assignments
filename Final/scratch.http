@@ -1,0 +1,51 @@
+@host = http://localhost:3000
+
+
+###
+POST {{host}}/api/v1/UsersController/seed
+# Add more POST requests for other users in your users.json file
+
+###
+POST {{host}}/api/v1/UsersController/login
+Content-Type: application/json
+
+{
+  "email": "aoali726@gmail.com",
+  "password": "9uQFF1Lh"
+ }
+
+
+###
+GET {{host}}/api/v1/UsersController/getAllUsers
+
+
+###
+POST {{host}}/api/v1/WorkoutsController/addWorkout
+Content-Type: application/json
+
+{
+  "id": 1,
+  "workoutName": "Chest 4",
+  "duration": 2,
+  "date": "2021-07-01",
+  "calories": 300
+}
+
+###
+GET {{host}}/api/v1/WorkoutsController/getWorkoutsById/1\\
+
+###
+DELETE {{host}}/api/v1/UsersController/deleteUser/65c41da9fc9683adb3278689
+
+###
+PUT {{host}}/api/v1/UsersController/updateUserRole/65835a6205b7e931e07113a2
+Content-Type: application/json
+
+{
+  "role": "admin"
+}
+
+###
+DELETE {{host}}/api/v1/WorkoutsController/deleteWorkout/65c66b51ac0813c2904a4d54
+
+```
