@@ -32,7 +32,7 @@ app
     next();
   })
 
-  .use("/api/v1/workouts", WorkoutsController)
+  .use("/api/v1/WorkoutsController", WorkoutsController)
 
 
   .use("/api/v1/UsersController", UsersController)

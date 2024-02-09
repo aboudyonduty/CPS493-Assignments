@@ -84,7 +84,6 @@ const newWorkout = ({
   duration: duration.value,
   date: date.value,
   calories: calories.value,
-  email: session.user?.email || "",
 });
 
 
@@ -95,7 +94,6 @@ const submitWorkout = () => {
     duration: duration.value,
     date: date.value,
     calories: calories.value,
-    email: session.user?.email || "",
   };
   addWorkout(workout);
 };

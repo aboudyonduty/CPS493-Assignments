@@ -41,11 +41,14 @@
           </div>
           <div class="user-detail-section">
             <span class="user-label">Role:</span>
-            <span class="user-data">{{ user.role }}</span>
+            <select v-model="user.role" @change="updateUser(user, user.role)">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
           </div>
         
           <!-- Delete User -->
-          <!-- <button class="button is-danger" @click="deleteExistingUser(user.id)">Delete</button> -->
+          <button class="button is-danger" @click="deleteExistingUser(user)">Delete</button>
         </div>
       </div>
     </div>
@@ -58,10 +61,8 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { getSession } from '@/model/session';
-import { useRouter } from 'vue-router';
-import { type User, addUser, getUsers } from '@/model/users';
+import { type User, addUser, getUsers, deleteUser, updateUserRole } from '@/model/users';
 
-const router = useRouter();
 const users = ref<User[]>();
 
 const newUser = ref<User>({
@@ -90,6 +91,18 @@ const addNewUser = async () => {
   users.value = await getUsers();
 };
 
+// Delete a user
+const deleteExistingUser = async (User: User) => {
+  console.log(User._id);
+  await deleteUser(User._id);
+  users.value = await getUsers();
+};
+
+// Update a user's role
+const updateUser = async (user: User, newRole: string) => {
+  await updateUserRole(user, newRole);
+  users.value = await getUsers();
+};
 </script>
 
 <style scoped>

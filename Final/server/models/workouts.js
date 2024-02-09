@@ -2,7 +2,6 @@
 /**
  * @typedef {Object} BaseWorkout
  * @property {number} id
- * @property {string} email
  * @property {string} workoutName
  * @property {string} date
  * @property {number} duration
@@ -25,9 +24,13 @@ async function getAll() {
   return collection.find({}).toArray();
 }
 
-async function getWorkoutsByEmail(email) {
+async function getWorkoutsById(id) {
+  const numberID = Number(id);
+  if (isNaN(numberID)) {
+    console.error("Invalid ID", id);
+  }
   const collection = await getCollection();
-  return await collection.find({email: email}).toArray();
+  return collection.find({id: numberID}).toArray();
 }
 
 async function addWorkout(workout) {
@@ -35,11 +38,15 @@ async function addWorkout(workout) {
   await collection.insertOne(workout);
 }
 async function deleteWorkout(id) {
-    const collection = await getCollection();
-    await collection.deleteOne({_id: ObjectId(id)});
-    }
+  const collection = await getCollection();
+  await collection.deleteOne({_id: new ObjectId(id)});
+}
+async function seed() {
+  const collection = await getCollection();
+  await collection.insertMany(data.workouts);
+}
 
 
 module.exports = {
-  getAll,getWorkoutsByEmail,addWorkout,deleteWorkout
+  getAll,getWorkoutsById,seed,addWorkout,deleteWorkout
 };

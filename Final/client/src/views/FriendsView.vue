@@ -2,37 +2,33 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { type Workout } from '@/model/workouts';
+import { type Workout, getWorkoutsById } from '@/model/workouts';
 import { getSession } from '@/model/session';
-import { getUserByEmail } from '@/model/users';
+import { getUserById, getUsers } from '@/model/users';
 
+const session = getSession();
 const allUsersWorkoutsData = ref<{ [name: string]: Workout[] }>({});
 const isLoggedIn = ref(false);
+const id = session.user?.id || 0;
 const email = ref('');
 const name = ref('');
 const lastname = ref('');
 
+//Displays all the Users except for the one that is logged in and their workouts 
+
 onMounted(async () => {
-  const session = getSession();
   if (session.user) {
-    // email.value = session.user.email;
-    // name.value = session.user.firstName;
-    // lastname.value = session.user.lastName;
     isLoggedIn.value = true;
-
-    const allWorkoutsByEmail = JSON.parse(localStorage.getItem('workouts') || '{}') as { [email: string]: Workout[] };
-
-    for (let email in allWorkoutsByEmail) {
-      // Skip if it's the logged-in user's email
-      if (email === session.user.email) continue;
-      console.log(email);
-
-      const user = await getUserByEmail(email);
-      if (user) {
-        const userName = `${user.firstName} ${user.lastName}`;
-        allUsersWorkoutsData.value[userName] = allWorkoutsByEmail[email];
-      }
-    }
+    const users = await getUsers();
+    const allUsersWorkouts = await Promise.all(
+      users
+        .filter((user) => user.id !== id)
+        .map(async (user) => {
+          const workouts = await getWorkoutsById(user.id);
+          return { [user.username]: workouts };
+        })
+    );
+    allUsersWorkoutsData.value = Object.assign({}, ...allUsersWorkouts);
   }
 });
 </script>
@@ -45,7 +41,7 @@ onMounted(async () => {
       <!-- Displaying Friends' Workouts -->
       <div class="workout-list" v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName">
         <h3>{{ userName }}'s Workouts</h3>
-        <div class="workout-item" v-for="workout in workouts" :key="workout.email">
+        <div class="workout-item" v-for="workout in workouts" :key="workout.id">
           <!-- Workout -->
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>

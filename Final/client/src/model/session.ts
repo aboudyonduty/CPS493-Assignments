@@ -11,8 +11,9 @@ const session = reactive({
   redirectUrl: null as string | null,
 })
 
-export function api(action: string, body?: unknown, method?: string) {
-  return myFetch.api(`${action}`, body, method)
+
+export function api(action: string, body?: any, method?: string, headers?: any) {
+  return myFetch.api(`${action}`, body, method, headers)
     .catch(err => showError(err))
 }
 

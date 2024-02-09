@@ -29,6 +29,10 @@ async function getAll() {
   const collection = await getCollection();
   return collection.find({}).toArray();
 }
+async function getUsersById(id) {
+  const collection = await getCollection();
+  return collection.find({id: id}).toArray();
+}
 
 async function addUser(user) {
   const collection = await getCollection();
@@ -43,6 +47,11 @@ async function addUser(user) {
   // Insert the new user
   const result = await collection.insertOne(user);
   return result;
+}
+
+async function deleteUser(id) {
+  const collection = await getCollection();
+  await collection.deleteOne({_id: new ObjectId(id)});
 }
 
 
@@ -74,6 +83,15 @@ function verifyJWT(token) {
     });
   })
 }
+async function updateUserRole(id, role) {
+  const collection = await getCollection();
+  const result = await collection
+    .updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { role: role } }
+    );
+  return result;
+}
 const searchUsers = async (query) => {
   try {
     const results = await User.find({
@@ -92,5 +110,5 @@ const searchUsers = async (query) => {
 
 
 module.exports = {
-  getAll, addUser, generateJWT, verifyJWT, seed,searchUsers
+  getAll, getUsersById, addUser, deleteUser, generateJWT, verifyJWT, seed,searchUsers, updateUserRole
 };

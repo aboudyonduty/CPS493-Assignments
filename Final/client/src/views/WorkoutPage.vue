@@ -1,100 +1,40 @@
-<!--InShaAllah-->
-
-<script setup lang="ts">
-import { ref, reactive, toRefs, onMounted } from 'vue';
-import { type Workout } from '@/model/workouts';
-import { getSession } from '@/model/session';
-import WorkoutForm from '@/components/WorkoutForm.vue';
-
-const session = getSession();
-
-interface WorkoutsByUser {
-  [email: string]: Workout[];
-}
-
-const initialWorkoutsData: WorkoutsByUser = {
-  
-};
-
-const savedWorkouts = localStorage.getItem('workouts');
-const workoutsFromLocalStorage: WorkoutsByUser = savedWorkouts ? JSON.parse(savedWorkouts) : {};
-
-const state = reactive({
-  allWorkouts: { ...initialWorkoutsData, ...workoutsFromLocalStorage },
-  currentWorkouts: session.user ? (workoutsFromLocalStorage[session.user.email] || initialWorkoutsData[session.user.email] || []) : [],
-});
-
-const handleAddWorkout = (workout: Workout) => {
-  state.currentWorkouts.unshift(workout);
-  if (session.user) {
-    state.allWorkouts[session.user.email] = state.currentWorkouts;
-  }
-  saveWorkoutsToLocalStorage();
-  closeModal();
-};
-
-const saveWorkoutsToLocalStorage = () => {
-  localStorage.setItem('workouts', JSON.stringify(state.allWorkouts));
-};
-
-onMounted(() => {
-  const savedWorkouts = localStorage.getItem('workouts');
-  if (savedWorkouts) {
-    state.allWorkouts = { ...initialWorkoutsData, ...JSON.parse(savedWorkouts) };
-    if (session.user) {
-      state.currentWorkouts = state.allWorkouts[session.user.email] || [];
-    }
-  }
-});
-
-const { allWorkouts, currentWorkouts } = toRefs(state);
-const isModalActive = ref(false);
-const openModal = () => isModalActive.value = true;
-const closeModal = () => isModalActive.value = false;
-
-</script>
-
 <template>
   <div class="container">
     <h2>Your Workouts</h2>
     
     <div v-if="session.user">
-      <!-- Trigger Modal Button -->
       <div class="center-button">
         <button class="button is-primary" @click="openModal">Add Workout</button>
       </div>
       
-      <!-- Displaying Workouts -->
       <div class="workout-list">
-        <div class="workout-item" v-for="workout in currentWorkouts">
-          <!-- Workout -->
+        <div class="workout-item" v-for="workout in currentWorkouts" :key="workout.id">
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>
             <span class="workout-data">{{ workout.workoutName }}</span>
           </div>
 
-          <!-- Date -->
           <div class="workout-detail-section">
             <span class="workout-label">Date:</span>
             <span class="workout-data">{{ workout.date }}</span>
           </div>
 
-          <!-- Duration -->
           <div class="workout-detail-section">
             <span class="workout-label">Duration:</span>
             <span class="workout-data">{{ workout.duration }} mins</span>
           </div>
 
-          <!-- Calories -->
           <div class="workout-detail-section">
             <span class="workout-label">Calories:</span>
             <span class="workout-data">{{ workout.calories }}</span>
           </div>
+
+          <!-- Delete Button -->
+          <button class="delete-button" @click="handleDeleteWorkout(workout._id)">Delete</button>
         </div>
       </div>
 
-      <!-- Workout Form Modal -->
-      <div v-bind:class="{ 'is-active': isModalActive }" class="modal">
+      <div :class="{ 'is-active': state.isModalActive }" class="modal">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-card">
           <header class="modal-card-head">
@@ -113,6 +53,49 @@ const closeModal = () => isModalActive.value = false;
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue';
+import { type Workout, getWorkoutsById, deleteWorkout } from '@/model/workouts';
+import { getSession } from '@/model/session';
+import WorkoutForm from '@/components/WorkoutForm.vue';
+
+const session = getSession();
+
+const state = reactive({
+  workouts: [] as Workout[],
+  isModalActive: false,
+});
+
+const workouts = ref<Workout[]>();
+const currentWorkouts = ref(state.workouts);
+
+const openModal = () => {
+  state.isModalActive = true;
+};
+
+const closeModal = () => {
+  state.isModalActive = false;
+};
+
+const handleAddWorkout = (workout: Workout) => {
+  state.workouts.push(workout);
+  closeModal();
+};
+
+const handleDeleteWorkout = async (_id: string) => {
+  await deleteWorkout(_id);
+  currentWorkouts.value = await getWorkoutsById(session.user.id);
+};
+
+onMounted(async () => {
+  if (session.user) {
+    const id = session.user.id;
+    currentWorkouts.value = await getWorkoutsById(id);
+  }
+});
+
+</script>
 
 <style scoped>
 .container {
@@ -180,6 +163,20 @@ h2 {
 .workout-data {
   font-size: 1rem;
   color: #333;
+}
+
+.delete-button {
+  padding: 0.5rem 1rem;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #ff2d2f;
 }
 
 .modal-card {

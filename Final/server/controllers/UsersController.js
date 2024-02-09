@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll, seed, generateJWT, getUserByEmail, addUser } = require('../models/users');
+const { getAll, seed, generateJWT, addUser,getUsersById, deleteUser, updateUserRole } = require('../models/users');
 const { requireUser } = require('../middleware/authorization');
 const router = express.Router();
 
@@ -19,12 +19,25 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
 
+  .get('/getUserById/:id', (req, res, next) => {
+    const { id } = req.params;
+    getUsersById(id)
+      .then(users => res.send(users))
+      .catch(next);
+  })
+
   .post("/addUser", (req, res, next) => {
     addUser(req.body)
       .then((x) => {
         const data = { data: x, isSuccess: true };
         res.send(data);
       })
+      .catch(next);
+  })
+  .delete('/deleteUser/:_id', (req, res, next) => {
+    const { _id } = req.params;
+    deleteUser(_id)
+      .then(() => res.send({ message: 'User deleted' }))
       .catch(next);
   })
   
@@ -53,6 +66,17 @@ router.get('/', requireUser(true), (req, res, next) => {
     try {
       const query = req.params.query;
       const result = await users.searchUsers(query);
+      res.json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  })
+  .put('/updateUserRole/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { role } = req.body;
+      const result = await updateUserRole(id, role);
       res.json(result);
     } catch (error) {
       console.error(error);

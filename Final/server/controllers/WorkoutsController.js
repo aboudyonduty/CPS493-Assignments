@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll, getWorkoutsByEmail,addWorkout,deleteWorkout } = require('../models/workouts');
+const { getAll, addWorkout,deleteWorkout, getWorkoutsById} = require('../models/workouts');
 const { requireUser } = require('../middleware/authorization');
 const router = express.Router();
 
@@ -13,11 +13,10 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
 
-
-  .get('/getWorkoutsByEmail/:email', (req, res, next) => {
-    const { email } = req.params;
-    getWorkoutsByEmail(email)
-      .then(user => res.send(user))
+  .get('/getWorkoutsById/:id', (req, res, next) => {
+    const { id } = req.params;
+    getWorkoutsById(id)
+      .then(workouts => res.send(workouts))
       .catch(next);
   })
 
@@ -29,7 +28,7 @@ router.get('/', requireUser(true), (req, res, next) => {
       })
       .catch(next);
   })
-  .delete('/deleteWorkout/:id', (req, res, next) => {
+  .delete('/deleteWorkout/:_id', (req, res, next) => {
     const { id } = req.params;
     deleteWorkout(id)
       .then(() => res.send({ message: 'Workout deleted' }))

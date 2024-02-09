@@ -37,6 +37,12 @@ const router = createRouter({
       name: "SignUpView",
       component: () => import("../views/SignUpView.vue"),
     },
+    {
+      path: "/SearchView",
+      name: "SearchView",
+      component: () => import("../views/SearchView.vue"),
+      beforeEnter: requireLogin
+    }
 
   ],
 });
