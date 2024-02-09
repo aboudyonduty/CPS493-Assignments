@@ -29,8 +29,8 @@ router.get('/', requireUser(true), (req, res, next) => {
       .catch(next);
   })
   .delete('/deleteWorkout/:_id', (req, res, next) => {
-    const { id } = req.params;
-    deleteWorkout(id)
+    const { _id } = req.params;
+    deleteWorkout(_id)
       .then(() => res.send({ message: 'Workout deleted' }))
       .catch(next);
   })

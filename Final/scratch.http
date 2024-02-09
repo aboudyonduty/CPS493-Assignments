@@ -44,3 +44,8 @@ Content-Type: application/json
 {
   "role": "admin"
 }
+
+###
+DELETE {{host}}/api/v1/WorkoutsController/deleteWorkout/65c66b51ac0813c2904a4d54
+
+```

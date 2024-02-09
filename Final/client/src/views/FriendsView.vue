@@ -24,7 +24,7 @@ onMounted(async () => {
       users
         .filter((user) => user.id !== id)
         .map(async (user) => {
-          const workouts = await getWorkoutsById(user.id);
+          const workouts = await getWorkoutsById(user.id as number);
           return { [user.username]: workouts };
         })
     );

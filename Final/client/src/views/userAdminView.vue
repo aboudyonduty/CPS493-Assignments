@@ -94,7 +94,7 @@ const addNewUser = async () => {
 // Delete a user
 const deleteExistingUser = async (User: User) => {
   console.log(User._id);
-  await deleteUser(User._id);
+  await deleteUser(User._id as string);
   users.value = await getUsers();
 };
 

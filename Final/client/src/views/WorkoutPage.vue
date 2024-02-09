@@ -30,7 +30,7 @@
           </div>
 
           <!-- Delete Button -->
-          <button class="delete-button" @click="handleDeleteWorkout(workout._id)">Delete</button>
+          <button class="delete-button" @click="handleDeleteWorkout(workout)">Delete</button>
         </div>
       </div>
 
@@ -83,15 +83,17 @@ const handleAddWorkout = (workout: Workout) => {
   closeModal();
 };
 
-const handleDeleteWorkout = async (_id: string) => {
-  await deleteWorkout(_id);
-  currentWorkouts.value = await getWorkoutsById(session.user.id);
+const handleDeleteWorkout = async (Workout: Workout) => {
+  await deleteWorkout(Workout._id as string);
+  if(session.user){
+    currentWorkouts.value = await getWorkoutsById(session.user.id as number);
+  }
 };
 
 onMounted(async () => {
   if (session.user) {
     const id = session.user.id;
-    currentWorkouts.value = await getWorkoutsById(id);
+    currentWorkouts.value = await getWorkoutsById(id as number);
   }
 });
 
