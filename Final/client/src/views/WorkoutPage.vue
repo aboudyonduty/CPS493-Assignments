@@ -1,14 +1,65 @@
+<!-- بسم الله -->
+
+<script lang="ts" setup>
+import { ref, reactive, onMounted } from "vue";
+import { type Workout, getWorkoutsById, deleteWorkout } from "@/model/workouts";
+import { getSession } from "@/model/session";
+import WorkoutForm from "@/components/WorkoutForm.vue";
+
+const session = getSession();
+
+const state = reactive({
+  workouts: [] as Workout[],
+  isModalActive: false,
+});
+
+const currentWorkouts = ref(state.workouts);
+
+const openModal = () => {
+  state.isModalActive = true;
+};
+
+const closeModal = () => {
+  state.isModalActive = false;
+};
+
+const handleAddWorkout = (workout: Workout) => {
+  state.workouts.push(workout);
+  closeModal();
+};
+
+const handleDeleteWorkout = async (Workout: Workout) => {
+  await deleteWorkout(Workout._id as string);
+  if (session.user) {
+    currentWorkouts.value = await getWorkoutsById(session.user.id as number);
+  }
+};
+
+onMounted(async () => {
+  if (session.user) {
+    const id = session.user.id;
+    currentWorkouts.value = await getWorkoutsById(id as number);
+  }
+});
+</script>
+
 <template>
   <div class="container">
     <h2>Your Workouts</h2>
-    
+
     <div v-if="session.user">
       <div class="center-button">
-        <button class="button is-primary" @click="openModal">Add Workout</button>
+        <button class="button is-primary" @click="openModal">
+          Add Workout
+        </button>
       </div>
-      
+
       <div class="workout-list">
-        <div class="workout-item" v-for="workout in currentWorkouts" :key="workout.id">
+        <div
+          class="workout-item"
+          v-for="workout in currentWorkouts"
+          :key="workout.id"
+        >
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>
             <span class="workout-data">{{ workout.workoutName }}</span>
@@ -30,7 +81,9 @@
           </div>
 
           <!-- Delete Button -->
-          <button class="delete-button" @click="handleDeleteWorkout(workout)">Delete</button>
+          <button class="delete-button" @click="handleDeleteWorkout(workout)">
+            Delete
+          </button>
         </div>
       </div>
 
@@ -39,7 +92,11 @@
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">Add Workout</p>
-            <button class="delete" aria-label="close" @click="closeModal"></button>
+            <button
+              class="delete"
+              aria-label="close"
+              @click="closeModal"
+            ></button>
           </header>
           <section class="modal-card-body">
             <WorkoutForm @new-workout="handleAddWorkout" />
@@ -54,57 +111,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
-import { type Workout, getWorkoutsById, deleteWorkout } from '@/model/workouts';
-import { getSession } from '@/model/session';
-import WorkoutForm from '@/components/WorkoutForm.vue';
-
-const session = getSession();
-
-const state = reactive({
-  workouts: [] as Workout[],
-  isModalActive: false,
-});
-
-const workouts = ref<Workout[]>();
-const currentWorkouts = ref(state.workouts);
-
-const openModal = () => {
-  state.isModalActive = true;
-};
-
-const closeModal = () => {
-  state.isModalActive = false;
-};
-
-const handleAddWorkout = (workout: Workout) => {
-  state.workouts.push(workout);
-  closeModal();
-};
-
-const handleDeleteWorkout = async (Workout: Workout) => {
-  await deleteWorkout(Workout._id as string);
-  if(session.user){
-    currentWorkouts.value = await getWorkoutsById(session.user.id as number);
-  }
-};
-
-onMounted(async () => {
-  if (session.user) {
-    const id = session.user.id;
-    currentWorkouts.value = await getWorkoutsById(id as number);
-  }
-});
-
-</script>
-
 <style scoped>
 .container {
   max-width: 1000px;
   margin: 4rem auto;
   padding: 2rem;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   color: #555;
 }
 
@@ -147,7 +159,7 @@ h2 {
   padding: 1.5rem;
   background-color: #fafafa;
   border-radius: 8px;
-  border: 1px solid #eaeaea; 
+  border: 1px solid #eaeaea;
 }
 
 .workout-detail-section {
@@ -189,7 +201,7 @@ h2 {
 .modal-card-head {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: #f7f7f7; 
+  background-color: #f7f7f7;
 }
 
 .modal-card-title {

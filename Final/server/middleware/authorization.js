@@ -1,12 +1,11 @@
-/* B"H
-*/
+// بسم الله
 
-const usersModel = require('../models/users');
+const usersModel = require("../models/users");
 
 module.exports = {
-  async parseAuthorizationToken(req, res, next) {
+  async parseAuthorizationToken(req, next) {
     const authHeader = req.headers.authorization;
-    const token = authHeader?.split(' ')[1];
+    const token = authHeader?.split(" ")[1];
     if (!token) {
       return next();
     }
@@ -14,22 +13,22 @@ module.exports = {
     req.user = payload;
     next();
   },
-  requireUser(adminOnly = false){
-    return function(req, res, next) {
+  requireUser(adminOnly = false) {
+    return function (req, next) {
       if (!req.user) {
         return next({
           status: 401,
-          message: 'You must be logged in to perform this action.'
+          message: "You must be logged in to perform this action.",
         });
       }
       if (adminOnly && !req.user.admin) {
         return next({
           status: 403,
-          message: 'You must be an admin to perform this action.'
+          message: "You must be an admin to perform this action.",
         });
       }
-      
+
       next();
-    }
+    };
   },
-}
+};

@@ -27,6 +27,7 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.17.17",
+    "@types/normalize-package-data": "^2.4.4",
     "@types/toastify-js": "^1.12.3",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",

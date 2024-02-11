@@ -1,36 +1,56 @@
-<!--InShaAllah-->
+<!-- بسم الله -->
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import LoginBadge from './LoginBadge.vue';
-import SignUpBadge from './SignUpBadge.vue';
-
+import { ref } from "vue";
+import { RouterLink } from "vue-router";
+import LoginBadge from "./LoginBadge.vue";
 const isActive = ref(false);
-
 </script>
 
 <template>
-  <nav class="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-dark has-shadow"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <div class="navbar-brand">
       <RouterLink class="navbar-item" to="/">
-        <img alt="Vue logo" class="logo" src="@/assets/SuperSaiyanFitness.png" width="32" height="32" />
+        <img
+          alt="Vue logo"
+          class="logo"
+          src="@/assets/SuperSaiyanFitness.png"
+          width="32"
+          height="32"
+        />
       </RouterLink>
-
-      <a role="button" class="navbar-burger burger" :class="{ 'is-active': isActive }" @click="isActive = !isActive" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a
+        role="button"
+        class="navbar-burger burger"
+        :class="{ 'is-active': isActive }"
+        @click="isActive = !isActive"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
-
-    <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
+    <div
+      id="navbarBasicExample"
+      class="navbar-menu"
+      :class="{ 'is-active': isActive }"
+    >
       <div class="navbar-start">
         <RouterLink class="navbar-item" to="/">My Activity</RouterLink>
-        <RouterLink class="navbar-item" to="/FriendsActivity">Friends Activity</RouterLink>
-        <RouterLink class="navbar-item" to="/UserAdminView">Admin/User</RouterLink>
+        <RouterLink class="navbar-item" to="/FriendsActivity"
+          >Friends Activity</RouterLink
+        >
+        <RouterLink class="navbar-item" to="/UserAdminView"
+          >Admin/User</RouterLink
+        >
         <RouterLink class="navbar-item" to="/SearchView">Search</RouterLink>
-  
       </div>
 
       <div class="navbar-end">
@@ -49,7 +69,7 @@ const isActive = ref(false);
 }
 .router-link-active {
   font-weight: bold;
-  color: #00d1b2 !important; 
+  color: #00d1b2 !important;
   border-bottom: 3px solid #00d1b2;
 }
 .navbar-item:hover {

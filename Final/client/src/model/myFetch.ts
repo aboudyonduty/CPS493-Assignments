@@ -1,3 +1,5 @@
+// بسم الله
+
 const API_ROOT = import.meta.env.VITE_API_ROOT as string;
 export function rest(url: string, data?: any, method?: string, headers?: any) {
   let fetchMethod = method;
@@ -9,15 +11,12 @@ export function rest(url: string, data?: any, method?: string, headers?: any) {
       fetchMethod = "GET";
     }
   }
-
-  // Ensure that the body is not included in DELETE requests, and is included in PUT requests
   let body;
   if (fetchMethod !== "DELETE" && data) {
     if (fetchMethod === "PUT" || fetchMethod === "POST") {
       body = JSON.stringify(data);
     }
   }
-
   return fetch(url, {
     method: fetchMethod,
     headers: {
@@ -29,11 +28,10 @@ export function rest(url: string, data?: any, method?: string, headers?: any) {
     res.ok
       ? res.json()
       : res.json().then((x) => {
-        throw { ...x, message: x.error };
-      })
+          throw { ...x, message: x.error };
+        })
   );
 }
-
 export function api(url: string, data?: any, method?: string, headers?: any) {
   return rest(API_ROOT + url, data, method, headers);
 }
@@ -47,15 +45,5 @@ export function loadScript(url: string, id: string) {
     script.onload = resolve;
     script.onerror = reject;
     document.head.appendChild(script);
-  })
+  });
 }
-
-
-
-
-/*  Asynchronous patterns in JavaScript
-    1. Callbacks
-    2. Pipelining
-    3. Promises
-    4. Async/Await
-*/
