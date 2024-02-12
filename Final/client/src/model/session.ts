@@ -1,37 +1,43 @@
+//بسم الله
+
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import * as myFetch from "./myFetch";
 import { type User } from "./users";
-import { type Workout } from "./workouts";
-import Toastify from 'toastify-js'; // Ensure Toastify is installed and imported
+import Toastify from "toastify-js";
 
 const session = reactive({
   user: null as User | null,
   token: null as string | null,
   redirectUrl: null as string | null,
-})
+});
 
-
-export function api(action: string, body?: any, method?: string, headers?: any) {
-  return myFetch.api(`${action}`, body, method, headers)
-    .catch(err => showError(err))
+export function api(
+  action: string,
+  body?: any,
+  method?: string,
+  headers?: any
+) {
+  return myFetch
+    .api(`${action}`, body, method, headers)
+    .catch((err) => showError(err));
 }
 
 export function showError(err: any) {
   console.error(err);
   Toastify({
     text: err.message || "An unexpected error occurred.",
-    duration: 3000,  // Adjust time as needed
+    duration: 3000,
     close: true,
-    gravity: "bottom",  // Toast appears at the bottom
-    position: "center",  // Centered at the bottom
-    backgroundColor: "rgba(0, 0, 0, 0.5)",  // Semi-transparent dark background for minimal look
+    gravity: "bottom",
+    position: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     className: "info",
     stopOnFocus: true,
     style: {
-      borderRadius: '3px',  // Rounded corners for a softer look
-      fontSize: '14px',  // Smaller font size for less intrusion
-    }
+      borderRadius: "3px",
+      fontSize: "14px",
+    },
   }).showToast();
 }
 export function getSession() {
@@ -40,13 +46,12 @@ export function getSession() {
 
 export function useLogin() {
   const router = useRouter();
- 
+
   return {
     async login(email: string, password: string): Promise<User | null> {
       const response = await api("/UsersController/login", { email, password });
 
       if (!response.isSuccess) {
-        // Show an error toast if login is not successful
         showError({ message: "Invalid credentials. Please try again." });
         return null;
       }
@@ -60,8 +65,8 @@ export function useLogin() {
     logout() {
       session.user = null;
       router.push("/LoginView");
-    }
-  }
+    },
+  };
 }
 
 export function useSignUp() {
@@ -86,6 +91,6 @@ export function useSignUp() {
     logout() {
       session.user = null;
       router.push("/LoginView");
-    }
-  }
+    },
+  };
 }

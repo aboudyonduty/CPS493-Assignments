@@ -1,11 +1,13 @@
+//بسم الله 
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const UsersModel = require('../models/users'); // Adjust the path as needed
+const UsersModel = require('../models/users');
 
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await UsersModel.getUserByEmail(email); // Implement this method in UsersModel
+        const user = await UsersModel.getUserByEmail(email); 
 
         if (!user || !bcrypt.compareSync(password, user.password)) {
             return res.status(401).json({ message: 'Invalid email or password' });
@@ -21,9 +23,4 @@ exports.login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error logging in' });
     }
-};
-
-
-exports.register = async (req, res) => {
-//Registration logic here
 };

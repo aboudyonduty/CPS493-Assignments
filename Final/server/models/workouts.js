@@ -1,3 +1,4 @@
+// بسم الله
 
 /**
  * @typedef {Object} BaseWorkout
@@ -8,12 +9,11 @@
  * @property {number} calories
  */
 
+const { connect } = require("./mongo");
 
-const { connect } = require('./mongo');
+const { ObjectId } = require("./mongo");
 
-const { ObjectId } = require('./mongo');
-
-const collectionName = 'Workouts';
+const collectionName = "Workouts";
 async function getCollection() {
   const db = await connect();
   return db.collection(collectionName);
@@ -30,7 +30,7 @@ async function getWorkoutsById(id) {
     console.error("Invalid ID", id);
   }
   const collection = await getCollection();
-  return collection.find({id: numberID}).toArray();
+  return collection.find({ id: numberID }).toArray();
 }
 
 async function addWorkout(workout) {
@@ -39,14 +39,17 @@ async function addWorkout(workout) {
 }
 async function deleteWorkout(id) {
   const collection = await getCollection();
-  await collection.deleteOne({_id: new ObjectId(id)});
+  await collection.deleteOne({ _id: new ObjectId(id) });
 }
 async function seed() {
   const collection = await getCollection();
   await collection.insertMany(data.workouts);
 }
 
-
 module.exports = {
-  getAll,getWorkoutsById,seed,addWorkout,deleteWorkout
+  getAll,
+  getWorkoutsById,
+  seed,
+  addWorkout,
+  deleteWorkout,
 };
