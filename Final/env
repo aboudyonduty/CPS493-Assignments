@@ -1,6 +1,0 @@
-PORT=3000
-BEST_CLASS=Web Development
-MONGO_URI="mongodb+srv://aoali726:Scubaru24@cluster0.fcczwvj.mongodb.net/?retryWrites=true&w=majority"
-JWT_EXPIRES_IN="3h"
-JWT_SECRET="your_secret_here"
-MONGO_DB_NAME=FitnessTracker
