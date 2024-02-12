@@ -1,51 +1,4 @@
-<!-- بسم الله -->
-
-<script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { getSession } from '@/model/session';
-import { type User, addUser, getUsers, deleteUser, updateUserRole } from '@/model/users';
-
-const users = ref<User[]>();
-
-const newUser = ref<User>({
-  id: 0,
-  firstName: '',
-  lastName: '',
-  email: '',
-  username: '',
-  password: '',
-  role: "",
-});
-
-const session = getSession();
-const isAdmin = session.user?.role === 'admin';
-
-onMounted(async () => {
-  if (isAdmin) {
-    users.value = await getUsers();
-  }
-});
-
-
-// Add a user
-const addNewUser = async () => {
-  await addUser(newUser.value);
-  users.value = await getUsers();
-};
-
-// Delete a user
-const deleteExistingUser = async (User: User) => {
-  console.log(User._id);
-  await deleteUser(User._id as string);
-  users.value = await getUsers();
-};
-
-// Update a user's role
-const updateUser = async (user: User, newRole: string) => {
-  await updateUserRole(user, newRole);
-  users.value = await getUsers();
-};
-</script>
+<!--InShaAllah-->
 
 <template>
   <div class="container">
@@ -104,6 +57,53 @@ const updateUser = async (user: User, newRole: string) => {
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+import { getSession } from '@/model/session';
+import { type User, addUser, getUsers, deleteUser, updateUserRole } from '@/model/users';
+
+const users = ref<User[]>();
+
+const newUser = ref<User>({
+  id: 0,
+  firstName: '',
+  lastName: '',
+  email: '',
+  username: '',
+  password: '',
+  role: "",
+});
+
+const session = getSession();
+const isAdmin = session.user?.role === 'admin';
+
+onMounted(async () => {
+  if (isAdmin) {
+    users.value = await getUsers();
+  }
+});
+
+
+// Add a user
+const addNewUser = async () => {
+  await addUser(newUser.value);
+  users.value = await getUsers();
+};
+
+// Delete a user
+const deleteExistingUser = async (User: User) => {
+  console.log(User._id);
+  await deleteUser(User._id as string);
+  users.value = await getUsers();
+};
+
+// Update a user's role
+const updateUser = async (user: User, newRole: string) => {
+  await updateUserRole(user, newRole);
+  users.value = await getUsers();
+};
+</script>
 
 <style scoped>
 .container {

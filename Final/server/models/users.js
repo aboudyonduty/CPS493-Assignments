@@ -1,4 +1,3 @@
-// بسم الله
 
 /**
  * @typedef {Object} BaseUser

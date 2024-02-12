@@ -13,28 +13,19 @@ onMounted(() => {
 });
 
 // Navigate to LoginView
-const navigateToLogin = () => {
-  router.push({ name: 'LoginView' });
-};
-
-// LogOut
-const doLogout = () => {
-  logout();
+const navigateToSignUp = () => {
+  router.push({ name: 'SignUpView' });
 };
 </script>
 
 
 <template>
   <div class="has-text-right" v-if="session.user">
-    Welcome, {{ session.user.firstName }} {{ session.user.lastName }} <br>
-    <small>
-      {{ session.user.email }}
-      <a class="button is-small is-light is-warning" @click.prevent="doLogout">
-        <span class="icon">
-          <i class="fas fa-sign-out-alt"></i>
-        </span>
-      </a>
-    </small>
+  </div>
+  <div class="buttons" v-else>
+    <button class="button" @click="navigateToSignUp">
+      <span>Sign Up</span>
+    </button>
   </div>
 </template>
 

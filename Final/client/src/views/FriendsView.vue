@@ -1,17 +1,21 @@
-<!-- بسم الله -->
+<!--InShaAllah-->
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { type Workout, getWorkoutsById } from "@/model/workouts";
-import { getSession } from "@/model/session";
-import { getUsers } from "@/model/users";
+import { ref, onMounted } from 'vue';
+import { type Workout, getWorkoutsById } from '@/model/workouts';
+import { getSession } from '@/model/session';
+import { getUserById, getUsers } from '@/model/users';
 
 const session = getSession();
 const allUsersWorkoutsData = ref<{ [name: string]: Workout[] }>({});
 const isLoggedIn = ref(false);
 const id = session.user?.id || 0;
+const email = ref('');
+const name = ref('');
+const lastname = ref('');
 
-//Displays all the Users except for the one that is logged in and their workouts
+//Displays all the Users except for the one that is logged in and their workouts 
+
 onMounted(async () => {
   if (session.user) {
     isLoggedIn.value = true;
@@ -35,11 +39,7 @@ onMounted(async () => {
 
     <div v-if="isLoggedIn">
       <!-- Displaying Friends' Workouts -->
-      <div
-        class="workout-list"
-        v-for="(workouts, userName) in allUsersWorkoutsData"
-        :key="userName"
-      >
+      <div class="workout-list" v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName">
         <h3>{{ userName }}'s Workouts</h3>
         <div class="workout-item" v-for="workout in workouts" :key="workout.id">
           <!-- Workout -->
@@ -80,7 +80,7 @@ onMounted(async () => {
   max-width: 1000px;
   margin: 4rem auto;
   padding: 2rem;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #555;
 }
 h2 {

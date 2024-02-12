@@ -1,6 +1,3 @@
-<!-- بسم الله -->
-
-
 <!DOCTYPE html>
 
 <template>

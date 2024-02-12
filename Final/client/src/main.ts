@@ -1,4 +1,4 @@
-//بسم الله
+//InShaAllah
 
 import './assets/main.css'
 
