@@ -62,6 +62,7 @@
 import { ref, onMounted } from 'vue';
 import { getSession } from '@/model/session';
 import { type User, addUser, getUsers, deleteUser, updateUserRole } from '@/model/users';
+import { deleteAllWorkoutsById} from '@/model/workouts';
 
 const users = ref<User[]>();
 
@@ -95,6 +96,7 @@ const addNewUser = async () => {
 const deleteExistingUser = async (User: User) => {
   console.log(User._id);
   await deleteUser(User._id as string);
+  await deleteAllWorkoutsById(User.id as number);
   users.value = await getUsers();
 };
 
