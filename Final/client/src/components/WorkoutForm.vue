@@ -1,3 +1,30 @@
+<!-- بسم الله -->
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { getSession } from "@/model/session";
+import { type Workout, addWorkout } from "@/model/workouts";
+
+const session = getSession();
+
+const id = session.user?.id || 0;
+const workoutName = ref("");
+const duration = ref(0);
+const date = ref("");
+const calories = ref(0);
+
+const submitWorkout = () => {
+  const workout: Workout = {
+    id: id,
+    workoutName: workoutName.value,
+    duration: duration.value,
+    date: date.value,
+    calories: calories.value,
+  };
+  addWorkout(workout);
+};
+</script>
+
 <template>
   <section class="section">
     <div class="container">
@@ -65,42 +92,4 @@
   </section>
 </template>
 
-<script lang="ts" setup>
-import { ref} from 'vue';
-import { getSession } from '@/model/session';
-import { type Workout, addWorkout, getWorkouts } from '@/model/workouts';
-
-const session = getSession();
-const workouts = ref<Workout[]>();
-
-const id = session.user?.id || 0;
-const workoutName = ref("");
-const duration = ref(0);
-const date = ref("");
-const calories = ref(0);
-const newWorkout = ({
-  id: id,
-  workoutName: workoutName.value,
-  duration: duration.value,
-  date: date.value,
-  calories: calories.value,
-});
-
-
-const submitWorkout = () => {
-  const workout: Workout = {
-    id: id,
-    workoutName: workoutName.value,
-    duration: duration.value,
-    date: date.value,
-    calories: calories.value,
-  };
-  addWorkout(workout);
-};
-
-
-</script>
-
-<style>
-/* Add any custom styles or overrides here */
-</style>
+<style></style>

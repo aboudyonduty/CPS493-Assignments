@@ -1,5 +1,4 @@
-/* B"H
-*/
+// بسم الله
 
 const usersModel = require('../models/users');
 
