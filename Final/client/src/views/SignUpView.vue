@@ -78,7 +78,7 @@
             <!-- Submit Button -->
             <div class="field">
                 <div class="control">
-                  <button class="button is-primary is-fullwidth">Sign Up</button>
+                  <button class="button is-primary is-fullwidth" :disabled="isFormIncomplete">Sign Up</button>
                 </div>
               </div>
             </form>
@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { type User} from '@/model/users';
 import { useRouter } from 'vue-router';
 import { useSignUp } from '@/model/session';
@@ -110,6 +110,10 @@ const password = ref('');
 const verifyPassword = ref('');
 
 const submitSignUp = () => {
+  if (password.value !== verifyPassword.value) {
+    alert('Passwords do not match');
+    return;
+  }
   const user: User = {
     firstName: firstName.value,
     lastName: lastName.value,
@@ -129,11 +133,17 @@ const goToLoginPage = () => {
   router.push({ name: 'LoginView' });
 };
 
+const isFormIncomplete = computed(() => {
+  return !firstName.value || !lastName.value || 
+         !username.value || !email.value || 
+         !password.value || !verifyPassword.value;
+});
+
+
 
 </script>
 
 <style scoped>
-/* You can add custom styles here if needed */
 .field.is-grouped {
   display: flex;
   justify-content: space-between;

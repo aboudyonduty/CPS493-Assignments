@@ -1,19 +1,36 @@
 <!-- بسم الله -->
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import { getSession } from "@/model/session";
 import { type Workout, addWorkout } from "@/model/workouts";
 
 const session = getSession();
+const emit = defineEmits(['workout-added']);
 
 const id = session.user?.id || 0;
 const workoutName = ref("");
 const duration = ref(0);
-const date = ref("");
+
+// Get current date in YYYY-MM-DD format
+const getCurrentDate = () => {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const year = today.getFullYear();
+  return `${year}-${month}-${day}`;
+};
+
+const date = ref(getCurrentDate());
 const calories = ref(0);
 
-const submitWorkout = () => {
+const resetForm = () => {
+  workoutName.value = "";
+  duration.value = 0;
+  date.value = getCurrentDate(); // Reset to current date
+  calories.value = 0;
+};
+const submitWorkout = async () => {
   const workout: Workout = {
     id: id,
     workoutName: workoutName.value,
@@ -21,7 +38,13 @@ const submitWorkout = () => {
     date: date.value,
     calories: calories.value,
   };
-  addWorkout(workout);
+  try {
+    await addWorkout(workout);
+    resetForm(); // Reset form fields after successful submission
+    emit('workout-added');
+  } catch (error) {
+    console.error('Error adding workout:', error);
+  }
 };
 </script>
 
@@ -92,4 +115,6 @@ const submitWorkout = () => {
   </section>
 </template>
 
-<style></style>
+<style>
+/* Your styles here */
+</style>
