@@ -1,58 +1,4 @@
-<template>
-  <div class="container">
-    <h2>Your Workouts</h2>
-    
-    <div v-if="session.user">
-      <div class="center-button">
-        <button class="button is-primary" @click="openModal">Add Workout</button>
-      </div>
-      
-      <div class="workout-list">
-        <div class="workout-item" v-for="workout in currentWorkouts" :key="workout.id">
-          <div class="workout-detail-section">
-            <span class="workout-label">Workout:</span>
-            <span class="workout-data">{{ workout.workoutName }}</span>
-          </div>
-
-          <div class="workout-detail-section">
-            <span class="workout-label">Date:</span>
-            <span class="workout-data">{{ formatDate(workout.date) }}</span>
-          </div>
-
-          <div class="workout-detail-section">
-            <span class="workout-label">Duration:</span>
-            <span class="workout-data">{{ workout.duration }} mins</span>
-          </div>
-
-          <div class="workout-detail-section">
-            <span class="workout-label">Calories:</span>
-            <span class="workout-data">{{ workout.calories }}</span>
-          </div>
-
-          <!-- Delete Button -->
-          <button class="delete-button" @click="handleDeleteWorkout(workout)">Delete</button>
-        </div>
-      </div>
-
-      <div :class="{ 'is-active': state.isModalActive }" class="modal">
-        <div class="modal-background" @click="closeModal"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Add Workout</p>
-            <button class="delete" aria-label="close" @click="closeModal"></button>
-          </header>
-          <section class="modal-card-body">
-            <WorkoutForm @workout-added="handleAddWorkout" />
-          </section>
-        </div>
-      </div>
-    </div>
-
-    <div v-else>
-      <p>Please login to view Workouts!</p>
-    </div>
-  </div>
-</template>
+<!-- بسم الله -->
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
@@ -109,6 +55,61 @@ const formatDate = (dateString : string) => {
 };
 
 </script>
+<template>
+  <div class="container">
+    <h2>Your Workouts</h2>
+    
+    <div v-if="session.user">
+      <div class="center-button">
+        <button class="button is-primary" @click="openModal">Add Workout</button>
+      </div>
+      
+      <div class="workout-list">
+        <div class="workout-item" v-for="workout in currentWorkouts" :key="workout.id">
+          <div class="workout-detail-section">
+            <span class="workout-label">Workout:</span>
+            <span class="workout-data">{{ workout.workoutName }}</span>
+          </div>
+
+          <div class="workout-detail-section">
+            <span class="workout-label">Date:</span>
+            <span class="workout-data">{{ formatDate(workout.date) }}</span>
+          </div>
+
+          <div class="workout-detail-section">
+            <span class="workout-label">Duration:</span>
+            <span class="workout-data">{{ workout.duration }} mins</span>
+          </div>
+
+          <div class="workout-detail-section">
+            <span class="workout-label">Calories:</span>
+            <span class="workout-data">{{ workout.calories }}</span>
+          </div>
+
+          <!-- Delete Button -->
+          <button class="delete-button" @click="handleDeleteWorkout(workout)">Delete</button>
+        </div>
+      </div>
+
+      <div :class="{ 'is-active': state.isModalActive }" class="modal">
+        <div class="modal-background" @click="closeModal"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Add Workout</p>
+            <button class="delete" aria-label="close" @click="closeModal"></button>
+          </header>
+          <section class="modal-card-body">
+            <WorkoutForm @workout-added="handleAddWorkout" />
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div v-else>
+      <p>Please login to view Workouts!</p>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .container {

@@ -1,4 +1,4 @@
-<!--InShaAllah-->
+<!-- بسم الله -->
 <script lang="ts" setup>
 import { ref, onMounted, computed } from "vue";
 import { getSession } from "@/model/session";

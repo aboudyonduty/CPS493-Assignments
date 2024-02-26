@@ -1,3 +1,50 @@
+<!-- بسم الله -->
+
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { type User} from '@/model/users';
+import { useRouter } from 'vue-router';
+import { useSignUp } from '@/model/session';
+
+const router = useRouter();
+const { signUp } = useSignUp();
+const firstName = ref('');
+const lastName = ref('');
+const username = ref('');
+const email = ref('');
+const password = ref('');
+const verifyPassword = ref('');
+
+const submitSignUp = () => {
+  if (password.value !== verifyPassword.value) {
+    alert('Passwords do not match');
+    return;
+  }
+  const user: User = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    username: username.value,
+    email: email.value,
+    password: password.value,
+    role: 'user',
+  };
+  signUp(user);
+
+  email.value = "";
+  password.value = "";
+  
+};
+
+const goToLoginPage = () => {
+  router.push({ name: 'LoginView' });
+};
+
+const isFormIncomplete = computed(() => {
+  return !firstName.value || !lastName.value || 
+         !username.value || !email.value || 
+         !password.value || !verifyPassword.value;
+});
+</script>
 <template>
   <section class="section">
     <div class="container">
@@ -93,55 +140,6 @@
       </div>
     </section>
 </template>
-
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import { type User} from '@/model/users';
-import { useRouter } from 'vue-router';
-import { useSignUp } from '@/model/session';
-
-const router = useRouter();
-const { signUp } = useSignUp();
-const firstName = ref('');
-const lastName = ref('');
-const username = ref('');
-const email = ref('');
-const password = ref('');
-const verifyPassword = ref('');
-
-const submitSignUp = () => {
-  if (password.value !== verifyPassword.value) {
-    alert('Passwords do not match');
-    return;
-  }
-  const user: User = {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    username: username.value,
-    email: email.value,
-    password: password.value,
-    role: 'user',
-  };
-  signUp(user);
-
-  email.value = "";
-  password.value = "";
-  
-};
-
-const goToLoginPage = () => {
-  router.push({ name: 'LoginView' });
-};
-
-const isFormIncomplete = computed(() => {
-  return !firstName.value || !lastName.value || 
-         !username.value || !email.value || 
-         !password.value || !verifyPassword.value;
-});
-
-
-
-</script>
 
 <style scoped>
 .field.is-grouped {

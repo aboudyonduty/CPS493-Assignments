@@ -1,4 +1,4 @@
-<!--InShaAllah-->
+<!-- بسم الله -->
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
