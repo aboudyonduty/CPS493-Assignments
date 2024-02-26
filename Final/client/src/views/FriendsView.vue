@@ -4,7 +4,7 @@
 import { ref, onMounted } from 'vue';
 import { type Workout, getWorkoutsById } from '@/model/workouts';
 import { getSession } from '@/model/session';
-import { getUserById, getUsers } from '@/model/users';
+import { getUsers } from '@/model/users';
 
 const session = getSession();
 const allUsersWorkoutsData = ref<{ [name: string]: Workout[] }>({});
