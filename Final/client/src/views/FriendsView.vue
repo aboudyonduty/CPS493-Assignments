@@ -44,43 +44,44 @@ const formatDate = (dateString : string) => {
 <template>
   <div class="container">
     <h2>Friends' Workouts</h2>
-
     <div v-if="isLoggedIn">
-      <div v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName" class="workout-list">
+      <div v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName">
         <h3 v-if="workouts.length > 0">{{ userName }}'s Workouts</h3>
-        <div v-if="workouts.length > 0" class="workout-item" v-for="workout in workouts" :key="workout.id">
-          <!-- Workout -->
-          <div class="workout-detail-section">
-            <span class="workout-label">Workout:</span>
-            <span class="workout-data">{{ workout.workoutName }}</span>
-          </div>
+        <div class="workout-grid" v-if="workouts.length > 0">
+          <div class="workout-item" v-for="workout in workouts" :key="workout.id">
+            <!-- Workout -->
+            <div class="workout-detail-section">
+              <span class="workout-label">Workout:</span>
+              <span class="workout-data">{{ workout.workoutName }}</span>
+            </div>
 
-          <!-- Date -->
-          <div class="workout-detail-section">
-            <span class="workout-label">Date:</span>
-            <span class="workout-data">{{ formatDate(workout.date) }}</span>
-          </div>
+            <!-- Date -->
+            <div class="workout-detail-section">
+              <span class="workout-label">Date:</span>
+              <span class="workout-data">{{ formatDate(workout.date) }}</span>
+            </div>
 
-          <!-- Duration -->
-          <div class="workout-detail-section">
-            <span class="workout-label">Duration:</span>
-            <span class="workout-data">{{ workout.duration }} mins</span>
-          </div>
+            <!-- Duration -->
+            <div class="workout-detail-section">
+              <span class="workout-label">Duration:</span>
+              <span class="workout-data">{{ workout.duration }} mins</span>
+            </div>
 
-          <!-- Calories -->
-          <div class="workout-detail-section">
-            <span class="workout-label">Calories:</span>
-            <span class="workout-data">{{ workout.calories }}</span>
+            <!-- Calories -->
+            <div class="workout-detail-section">
+              <span class="workout-label">Calories:</span>
+              <span class="workout-data">{{ workout.calories }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     <div v-else>
       <p>Please login to view this page.</p>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .container {
@@ -90,43 +91,58 @@ const formatDate = (dateString : string) => {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #555;
 }
+
 h2 {
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 2rem;
 }
+
 h3 {
   font-size: 1.5rem;
   font-weight: 500;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
-.workout-list {
+
+.workout-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.workout-item {
+  flex: 0 0 calc(50% - 1rem);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-}
-.workout-item {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  padding: 1.5rem;
+  gap: 0.5rem;
+  padding: 1rem;
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .workout-detail-section {
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .workout-label {
   font-weight: 500;
-  margin-bottom: 0.5rem;
   color: #777;
 }
+
 .workout-data {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #333;
 }
+
+@media (max-width: 600px) {
+  .workout-item {
+    flex: 0 0 100%;
+  }
+}
 </style>
+
