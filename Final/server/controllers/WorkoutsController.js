@@ -6,6 +6,8 @@ const {
   addWorkout,
   deleteWorkout,
   getWorkoutsById,
+  deleteAllWorkoutsById,
+  
 } = require("../models/workouts");
 const { requireUser } = require("../middleware/authorization");
 const router = express.Router();
@@ -40,6 +42,13 @@ router
     const { _id } = req.params;
     deleteWorkout(_id)
       .then(() => res.send({ message: "Workout deleted" }))
+      .catch(next);
+  })
+  //deletes every workout from a specific user
+  .delete("/deleteAllWorkoutsById/:id", (req, res, next) => {
+    const { id } = req.params;
+    deleteAllWorkoutsById(id)
+      .then(() => res.send({ message: "Workouts deleted" }))
       .catch(next);
   });
 

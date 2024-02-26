@@ -31,6 +31,14 @@ onMounted(async () => {
     allUsersWorkoutsData.value = Object.assign({}, ...allUsersWorkouts);
   }
 });
+const formatDate = (dateString : string) => {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+  
+  return `${month}-${day}-${year}`;
+};
 </script>
 
 <template>
@@ -38,10 +46,9 @@ onMounted(async () => {
     <h2>Friends' Workouts</h2>
 
     <div v-if="isLoggedIn">
-      <!-- Displaying Friends' Workouts -->
-      <div class="workout-list" v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName">
-        <h3>{{ userName }}'s Workouts</h3>
-        <div class="workout-item" v-for="workout in workouts" :key="workout.id">
+      <div v-for="(workouts, userName) in allUsersWorkoutsData" :key="userName" class="workout-list">
+        <h3 v-if="workouts.length > 0">{{ userName }}'s Workouts</h3>
+        <div v-if="workouts.length > 0" class="workout-item" v-for="workout in workouts" :key="workout.id">
           <!-- Workout -->
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>
@@ -51,7 +58,7 @@ onMounted(async () => {
           <!-- Date -->
           <div class="workout-detail-section">
             <span class="workout-label">Date:</span>
-            <span class="workout-data">{{ workout.date }}</span>
+            <span class="workout-data">{{ formatDate(workout.date) }}</span>
           </div>
 
           <!-- Duration -->
@@ -83,43 +90,57 @@ onMounted(async () => {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #555;
 }
+
 h2 {
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 2rem;
 }
+
 h3 {
   font-size: 1.5rem;
   font-weight: 500;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
+
 .workout-list {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.workout-item {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  flex-wrap: wrap;
   gap: 1rem;
-  padding: 1.5rem;
+}
+
+.workout-item {
+  flex: 0 0 calc(50% - 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .workout-detail-section {
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .workout-label {
   font-weight: 500;
-  margin-bottom: 0.5rem;
   color: #777;
 }
+
 .workout-data {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #333;
+}
+
+@media (max-width: 600px) {
+  .workout-item {
+    flex: 0 0 100%;
+  }
 }
 </style>

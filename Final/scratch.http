@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{host}}/api/v1/WorkoutsController/getWorkoutsById/1\\
+GET {{host}}/api/v1/WorkoutsController/getWorkoutsById/1
 
 ###
 DELETE {{host}}/api/v1/UsersController/deleteUser/65c41da9fc9683adb3278689
@@ -48,4 +48,6 @@ Content-Type: application/json
 ###
 DELETE {{host}}/api/v1/WorkoutsController/deleteWorkout/65c66b51ac0813c2904a4d54
 
+###
+DELETE {{host}}/api/v1/WorkoutsController/deleteAllWorkoutsById/4
 ```

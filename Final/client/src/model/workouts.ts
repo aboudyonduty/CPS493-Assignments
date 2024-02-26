@@ -22,3 +22,6 @@ export async function deleteWorkout(_id: string): Promise<Workout> {
 export async function getWorkoutsById(id: number): Promise<Workout[]> {
   return api(`/WorkoutsController/getWorkoutsById/${id}`);
 }
+export async function deleteAllWorkoutsById(id: number): Promise<Workout[]> {
+  return api(`/WorkoutsController/deleteAllWorkoutsById/${id}`, null, "DELETE");
+}

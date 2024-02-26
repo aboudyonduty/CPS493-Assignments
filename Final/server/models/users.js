@@ -36,6 +36,20 @@ async function getUsersById(id) {
 
 async function addUser(user) {
   const collection = await getCollection();
+  // Check if the username is already in use
+  const existingUsername = await collection
+    .find({ username: user.username })
+    .toArray();
+  if (existingUsername.length > 0) {
+    throw new Error("Username already in use");
+  }
+  // Check if the email is already in use
+  const existingUser = await collection
+    .find({ email: user.email })
+    .toArray();
+  if (existingUser.length > 0) {
+    throw new Error("Email already in use");
+  }
 
   // Find the maximum id value in the collection
   const maxIdUser = await collection.find().sort({ id: -1 }).limit(1).toArray();

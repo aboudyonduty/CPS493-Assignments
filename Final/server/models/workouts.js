@@ -37,6 +37,15 @@ async function addWorkout(workout) {
   const collection = await getCollection();
   await collection.insertOne(workout);
 }
+//deletes every workout from a specific user
+async function deleteAllWorkoutsById(id) {
+  const numberID = Number(id);
+  if (isNaN(numberID)) {
+    console.error("Invalid ID", id);
+  }
+  const collection = await getCollection();
+  await collection.deleteMany({ id: numberID });
+}
 async function deleteWorkout(id) {
   const collection = await getCollection();
   await collection.deleteOne({ _id: new ObjectId(id) });
@@ -52,4 +61,5 @@ module.exports = {
   seed,
   addWorkout,
   deleteWorkout,
+  deleteAllWorkoutsById
 };
