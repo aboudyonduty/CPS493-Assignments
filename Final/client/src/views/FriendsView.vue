@@ -90,57 +90,43 @@ const formatDate = (dateString : string) => {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #555;
 }
-
 h2 {
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 2rem;
 }
-
 h3 {
   font-size: 1.5rem;
   font-weight: 500;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
-
 .workout-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.workout-item {
-  flex: 0 0 calc(50% - 1rem);
-  display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
+  gap: 2rem;
+}
+.workout-item {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1.5rem;
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 .workout-detail-section {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
 }
-
 .workout-label {
   font-weight: 500;
+  margin-bottom: 0.5rem;
   color: #777;
 }
-
 .workout-data {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #333;
-}
-
-@media (max-width: 600px) {
-  .workout-item {
-    flex: 0 0 100%;
-  }
 }
 </style>
