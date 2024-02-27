@@ -6,7 +6,7 @@ import { getSession } from "@/model/session";
 import { type Workout, addWorkout } from "@/model/workouts";
 
 const session = getSession();
-const emit = defineEmits(['workout-added']);
+const emit = defineEmits(["workout-added"]);
 
 const id = session.user?.id || 0;
 const workoutName = ref("");
@@ -15,8 +15,8 @@ const duration = ref(0);
 // Get current date in YYYY-MM-DD format
 const getCurrentDate = () => {
   const today = new Date();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
   const year = today.getFullYear();
   return `${year}-${month}-${day}`;
 };
@@ -41,9 +41,9 @@ const submitWorkout = async () => {
   try {
     await addWorkout(workout);
     resetForm(); // Reset form fields after successful submission
-    emit('workout-added');
+    emit("workout-added");
   } catch (error) {
-    console.error('Error adding workout:', error);
+    console.error("Error adding workout:", error);
   }
 };
 </script>

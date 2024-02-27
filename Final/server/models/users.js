@@ -44,9 +44,7 @@ async function addUser(user) {
     throw new Error("Username already in use");
   }
   // Check if the email is already in use
-  const existingUser = await collection
-    .find({ email: user.email })
-    .toArray();
+  const existingUser = await collection.find({ email: user.email }).toArray();
   if (existingUser.length > 0) {
     throw new Error("Email already in use");
   }

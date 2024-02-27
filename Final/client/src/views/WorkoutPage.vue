@@ -1,10 +1,10 @@
 <!-- بسم الله -->
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
-import { type Workout, getWorkoutsById, deleteWorkout } from '@/model/workouts';
-import { getSession } from '@/model/session';
-import WorkoutForm from '@/components/WorkoutForm.vue';
+import { ref, reactive, onMounted } from "vue";
+import { type Workout, getWorkoutsById, deleteWorkout } from "@/model/workouts";
+import { getSession } from "@/model/session";
+import WorkoutForm from "@/components/WorkoutForm.vue";
 
 const session = getSession();
 
@@ -33,7 +33,7 @@ const handleAddWorkout = async () => {
 
 const handleDeleteWorkout = async (Workout: Workout) => {
   await deleteWorkout(Workout._id as string);
-  if(session.user){
+  if (session.user) {
     currentWorkouts.value = await getWorkoutsById(session.user.id as number);
   }
 };
@@ -45,27 +45,32 @@ onMounted(async () => {
   }
 });
 
-const formatDate = (dateString : string) => {
+const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const year = date.getFullYear();
-  
+
   return `${month}-${day}-${year}`;
 };
-
 </script>
 <template>
   <div class="container">
     <h2>Your Workouts</h2>
-    
+
     <div v-if="session.user">
       <div class="center-button">
-        <button class="button is-primary" @click="openModal">Add Workout</button>
+        <button class="button is-primary" @click="openModal">
+          Add Workout
+        </button>
       </div>
-      
+
       <div class="workout-list">
-        <div class="workout-item" v-for="workout in currentWorkouts" :key="workout.id">
+        <div
+          class="workout-item"
+          v-for="workout in currentWorkouts"
+          :key="workout.id"
+        >
           <div class="workout-detail-section">
             <span class="workout-label">Workout:</span>
             <span class="workout-data">{{ workout.workoutName }}</span>
@@ -87,7 +92,9 @@ const formatDate = (dateString : string) => {
           </div>
 
           <!-- Delete Button -->
-          <button class="delete-button" @click="handleDeleteWorkout(workout)">Delete</button>
+          <button class="delete-button" @click="handleDeleteWorkout(workout)">
+            Delete
+          </button>
         </div>
       </div>
 
@@ -96,7 +103,11 @@ const formatDate = (dateString : string) => {
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">Add Workout</p>
-            <button class="delete" aria-label="close" @click="closeModal"></button>
+            <button
+              class="delete"
+              aria-label="close"
+              @click="closeModal"
+            ></button>
           </header>
           <section class="modal-card-body">
             <WorkoutForm @workout-added="handleAddWorkout" />
@@ -116,7 +127,7 @@ const formatDate = (dateString : string) => {
   max-width: 1000px;
   margin: 4rem auto;
   padding: 2rem;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   color: #555;
 }
 
@@ -161,7 +172,7 @@ h2 {
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
 }
 
 .workout-detail-section {
@@ -203,7 +214,7 @@ h2 {
 .modal-card-head {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: #f7f7f7; 
+  background-color: #f7f7f7;
 }
 
 .modal-card-title {
@@ -211,4 +222,3 @@ h2 {
   color: #333;
 }
 </style>
-

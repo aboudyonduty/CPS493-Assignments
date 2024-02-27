@@ -7,7 +7,6 @@ const {
   deleteWorkout,
   getWorkoutsById,
   deleteAllWorkoutsById,
-  
 } = require("../models/workouts");
 const { requireUser } = require("../middleware/authorization");
 const router = express.Router();

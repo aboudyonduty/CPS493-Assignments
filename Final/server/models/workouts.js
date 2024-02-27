@@ -61,5 +61,5 @@ module.exports = {
   seed,
   addWorkout,
   deleteWorkout,
-  deleteAllWorkoutsById
+  deleteAllWorkoutsById,
 };

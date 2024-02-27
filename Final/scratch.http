@@ -50,4 +50,7 @@ DELETE {{host}}/api/v1/WorkoutsController/deleteWorkout/65c66b51ac0813c2904a4d54
 
 ###
 DELETE {{host}}/api/v1/WorkoutsController/deleteAllWorkoutsById/4
-```
+
+
+###
+GET {{host}}/api/v1/UsersController/getAllUsers

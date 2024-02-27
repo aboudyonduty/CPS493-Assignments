@@ -47,9 +47,13 @@ const isActive = ref(false);
     >
       <div class="navbar-start">
         <RouterLink class="navbar-item" to="/">My Activity</RouterLink>
-        <RouterLink class="navbar-item" to="/FriendsActivity">Friends Activity</RouterLink>
+        <RouterLink class="navbar-item" to="/FriendsActivity"
+          >Friends Activity</RouterLink
+        >
         <RouterLink class="navbar-item" to="/SearchView">Search</RouterLink>
-        <RouterLink class="navbar-item" to="/UserAdminView">Admin/User</RouterLink>
+        <RouterLink class="navbar-item" to="/UserAdminView"
+          >Admin/User</RouterLink
+        >
       </div>
 
       <div class="navbar-end">

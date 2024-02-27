@@ -1,30 +1,51 @@
-//بسم الله 
+// بسم الله
 
-const express = require('express');
-const { getAll, seed, generateJWT, addUser,getUsersById, deleteUser, updateUserRole } = require('../models/users');
-const { requireUser } = require('../middleware/authorization');
+const express = require("express");
+const {
+  getAll,
+  seed,
+  generateJWT,
+  addUser,
+  getUsersById,
+  deleteUser,
+  updateUserRole,
+} = require("../models/users");
+const { requireUser } = require("../middleware/authorization");
 const router = express.Router();
 
-router.get('/', requireUser(true), (req, res, next) => {
-
-  res.send(getAll());
-
-})
-  .post('/seed', (req, res, next) => {
+router
+  .get("/", requireUser(true), (req, res, next) => {
+    res.send(getAll());
+  })
+  .post("/seed", (req, res, next) => {
     seed();
-    res.send({ message: 'Users seeded' });
+    res.send({ message: "Users seeded" });
   })
 
-  .get('/getAllUsers', (req, res, next) => {
+  .get("/getAllUsers", (req, res, next) => {
     getAll()
-      .then(users => res.send(users))
+      .then((users) => res.send(users))
       .catch(next);
   })
+  // .get("/getAllUsers", async (req, res, next) => {
+  //   try {
+  //     const users = await getAll();
+  //     const userTokens = await Promise.all(
+  //       users.map(async (user) => {
+  //         const token = await generateJWT(user);
+  //         return { username: user.username, token }; // Include any other user details you need
+  //       })
+  //     );
+  //     res.send(userTokens);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // });
 
-  .get('/getUserById/:id', (req, res, next) => {
+  .get("/getUserById/:id", (req, res, next) => {
     const { id } = req.params;
     getUsersById(id)
-      .then(users => res.send(users))
+      .then((users) => res.send(users))
       .catch(next);
   })
 
@@ -36,14 +57,13 @@ router.get('/', requireUser(true), (req, res, next) => {
       })
       .catch(next);
   })
-  .delete('/deleteUser/:_id', (req, res, next) => {
+  .delete("/deleteUser/:_id", (req, res, next) => {
     const { _id } = req.params;
     deleteUser(_id)
-      .then(() => res.send({ message: 'User deleted' }))
+      .then(() => res.send({ message: "User deleted" }))
       .catch(next);
   })
-  
-  
+
   .post("/login", (req, res, next) => {
     const { email, password } = req.body;
     getAll()
@@ -64,17 +84,17 @@ router.get('/', requireUser(true), (req, res, next) => {
       })
       .catch(next);
   })
-  .get('/search/:query', async (req, res) => {
+  .get("/search/:query", async (req, res) => {
     try {
       const query = req.params.query;
       const result = await users.searchUsers(query);
       res.json(result);
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send("Internal Server Error");
     }
   })
-  .put('/updateUserRole/:id', async (req, res) => {
+  .put("/updateUserRole/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const { role } = req.body;
@@ -82,9 +102,8 @@ router.get('/', requireUser(true), (req, res, next) => {
       res.json(result);
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send("Internal Server Error");
     }
   });
-
 
 module.exports = router;

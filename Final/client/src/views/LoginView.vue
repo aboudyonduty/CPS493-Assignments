@@ -4,12 +4,17 @@
       <div class="column is-6 is-offset-3">
         <h1 class="title has-text-centered">Login</h1>
         <div class="box">
-
           <!-- Email Field -->
           <div class="field">
             <label class="label">Email</label>
             <div class="control has-icons-left">
-              <input v-model="email" class="input" type="email" placeholder="Email" required>
+              <input
+                v-model="email"
+                class="input"
+                type="email"
+                placeholder="Email"
+                required
+              />
               <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
               </span>
@@ -20,7 +25,13 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left">
-              <input v-model="password" class="input" type="password" placeholder="Password" required>
+              <input
+                v-model="password"
+                class="input"
+                type="password"
+                placeholder="Password"
+                required
+              />
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
@@ -30,15 +41,19 @@
           <!-- Login Button -->
           <div class="field">
             <p class="control">
-              <button @click="doLogin" class="button is-success is-fullwidth">Login</button>
+              <button @click="doLogin" class="button is-success is-fullwidth">
+                Login
+              </button>
             </p>
           </div>
 
           <!-- Sign Up Prompt -->
           <div class="has-text-centered">
-            <p>Don't have an account? <a @click="navigateToSignUp" class="signup-prompt">Sign Up!</a></p>
+            <p>
+              Don't have an account?
+              <a @click="navigateToSignUp" class="signup-prompt">Sign Up!</a>
+            </p>
           </div>
-
         </div>
       </div>
     </div>
@@ -46,23 +61,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { getSession, useLogin } from '@/model/session';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { getSession, useLogin } from "@/model/session";
 
 const router = useRouter();
 const session = getSession();
 const { login } = useLogin();
-const email = ref('');
-const password = ref('');
+const email = ref("");
+const password = ref("");
 
 const navigateToSignUp = () => {
-  router.push({ name: 'SignUpView' });
+  router.push({ name: "SignUpView" });
 };
 
 const doLogin = () => {
   login(email.value, password.value);
-}
+};
 </script>
 
 <style scoped>
