@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { getSession, useLogin } from "@/model/session";
+
+const router = useRouter();
+const session = getSession();
+const { login } = useLogin();
+const email = ref("");
+const password = ref("");
+
+const navigateToSignUp = () => {
+  router.push({ name: "SignUpView" });
+};
+
+const doLogin = () => {
+  login(email.value, password.value);
+};
+</script>
+
 <template>
   <section class="section">
     <div class="container">
@@ -60,28 +80,7 @@
   </section>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { getSession, useLogin } from "@/model/session";
-
-const router = useRouter();
-const session = getSession();
-const { login } = useLogin();
-const email = ref("");
-const password = ref("");
-
-const navigateToSignUp = () => {
-  router.push({ name: "SignUpView" });
-};
-
-const doLogin = () => {
-  login(email.value, password.value);
-};
-</script>
-
 <style scoped>
-/* You can adjust these styles to match the sign-up page more closely */
 .section {
   padding: 40px;
 }

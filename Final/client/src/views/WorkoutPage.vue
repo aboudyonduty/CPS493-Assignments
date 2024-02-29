@@ -164,7 +164,7 @@ h2 {
 }
 
 .workout-item {
-  flex: 0 0 calc(50% - 1rem); /* Adjust the size of the cards */
+  flex: 0 0 calc(50% - 1rem); 
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -172,7 +172,7 @@ h2 {
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .workout-detail-section {

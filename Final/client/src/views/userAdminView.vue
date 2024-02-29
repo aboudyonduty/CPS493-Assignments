@@ -177,7 +177,7 @@ h2 {
 
 .add-user-form {
   display: flex;
-  justify-content: center; /* Aligns children (form elements) in the center */
+  justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 3rem;
