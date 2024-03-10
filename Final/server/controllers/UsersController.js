@@ -40,7 +40,7 @@ router
   //   } catch (error) {
   //     next(error);
   //   }
-  // });
+  // })
 
   .get("/getUserById/:id", (req, res, next) => {
     const { id } = req.params;

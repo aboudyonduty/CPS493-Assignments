@@ -23,6 +23,13 @@ router
   })
 
   .get("/getWorkoutsById/:id", (req, res, next) => {
+    if (req.user.id !== req.params.id && !req.user.admin) {
+      return next({
+        status: 401,
+        message: "You are not authorized to view this user's workouts.",
+      });
+    }
+
     const { id } = req.params;
     getWorkoutsById(id)
       .then((workouts) => res.send(workouts))
