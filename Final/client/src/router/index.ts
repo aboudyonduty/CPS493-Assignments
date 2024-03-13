@@ -1,6 +1,8 @@
 //بسم الله
 
 import { createRouter, createWebHashHistory } from "vue-router";
+import type { RouteLocationNormalized } from "vue-router";
+import type { NavigationGuardNext } from "vue-router";
 import WorkoutPage from "../views/WorkoutPage.vue";
 import LoginView from "../views/LoginView.vue";
 import { getSession } from "@/model/session";
@@ -47,27 +49,14 @@ const router = createRouter({
 });
 
 function requireLogin(
-  to: import("vue-router").RouteLocationNormalized,
-  from: import("vue-router").RouteLocationNormalized,
-  next: import("vue-router").NavigationGuardNext
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: NavigationGuardNext
 ) {
   const session = getSession();
-  if (!session.user) {
+  if (!session.user || !session.token) {
     session.redirectUrl = to.fullPath;
     next("/LoginView");
-  } else {
-    next();
-  }
-}
-
-function requireAdmin(
-  to: import("vue-router").RouteLocationNormalized,
-  from: import("vue-router").RouteLocationNormalized,
-  next: import("vue-router").NavigationGuardNext
-) {
-  const session = getSession();
-  if (!session.user || session.user.role !== "admin") {
-    next();
   } else {
     next();
   }

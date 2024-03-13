@@ -12,8 +12,6 @@ const state = reactive({
   workouts: [] as Workout[],
   isModalActive: false,
 });
-
-const workouts = ref<Workout[]>();
 const currentWorkouts = ref(state.workouts);
 
 const openModal = () => {
@@ -44,15 +42,6 @@ onMounted(async () => {
     currentWorkouts.value = await getWorkoutsById(id as number);
   }
 });
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const year = date.getFullYear();
-
-  return `${month}-${day}-${year}`;
-};
 </script>
 <template>
   <div class="container">
@@ -78,7 +67,7 @@ const formatDate = (dateString: string) => {
 
           <div class="workout-detail-section">
             <span class="workout-label">Date:</span>
-            <span class="workout-data">{{ formatDate(workout.date) }}</span>
+            <span class="workout-data">{{ workout.date }}</span>
           </div>
 
           <div class="workout-detail-section">
@@ -164,7 +153,7 @@ h2 {
 }
 
 .workout-item {
-  flex: 0 0 calc(50% - 1rem); 
+  flex: 0 0 calc(50% - 1rem);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -172,7 +161,7 @@ h2 {
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .workout-detail-section {
@@ -220,5 +209,46 @@ h2 {
 .modal-card-title {
   font-weight: 500;
   color: #333;
+}
+
+.modal {
+  transition: opacity 0.5s ease;
+}
+
+.modal.is-active {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Slide-up Animation for Workout Items */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.workout-item {
+  animation: slideUp 0.5s ease;
+}
+
+/* Enhanced Button Hover Effect */
+.button.is-primary:hover,
+.delete-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

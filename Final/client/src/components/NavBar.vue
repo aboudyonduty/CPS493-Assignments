@@ -51,12 +51,12 @@ const isActive = ref(false);
           >Friends Activity</RouterLink
         >
         <RouterLink class="navbar-item" to="/SearchView">Search</RouterLink>
-        <RouterLink class="navbar-item" to="/UserAdminView"
-          >Admin/User</RouterLink
-        >
       </div>
 
       <div class="navbar-end">
+        <RouterLink class="navbar-item" to="/UserAdminView"
+          >Developer Tools</RouterLink
+        >
         <div class="navbar-item">
           <LoginBadge />
         </div>

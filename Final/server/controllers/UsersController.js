@@ -1,6 +1,7 @@
 // بسم الله
 
 const express = require("express");
+const bcrypt = require("bcrypt");
 const {
   getAll,
   seed,
@@ -17,32 +18,14 @@ router
   .get("/", requireUser(true), (req, res, next) => {
     res.send(getAll());
   })
-  .post("/seed", (req, res, next) => {
-    seed();
-    res.send({ message: "Users seeded" });
-  })
 
-  .get("/getAllUsers", (req, res, next) => {
+  .get("/getAllUsers", requireUser(), (req, res, next) => {
     getAll()
       .then((users) => res.send(users))
       .catch(next);
   })
-  // .get("/getAllUsers", async (req, res, next) => {
-  //   try {
-  //     const users = await getAll();
-  //     const userTokens = await Promise.all(
-  //       users.map(async (user) => {
-  //         const token = await generateJWT(user);
-  //         return { username: user.username, token }; // Include any other user details you need
-  //       })
-  //     );
-  //     res.send(userTokens);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // })
 
-  .get("/getUserById/:id", (req, res, next) => {
+  .get("/getUserById/:id", requireUser(), (req, res, next) => {
     const { id } = req.params;
     getUsersById(id)
       .then((users) => res.send(users))
@@ -57,34 +40,32 @@ router
       })
       .catch(next);
   })
-  .delete("/deleteUser/:_id", (req, res, next) => {
+  .delete("/deleteUser/:_id", requireUser(), (req, res, next) => {
     const { _id } = req.params;
     deleteUser(_id)
       .then(() => res.send({ message: "User deleted" }))
       .catch(next);
   })
 
-  .post("/login", (req, res, next) => {
+  .post("/login", async (req, res) => {
+    console.log("Login request received");
     const { email, password } = req.body;
-    getAll()
-      .then(async (users) => {
-        const user = users.find(
-          (x) => x.email === email && x.password === password
-        );
-        if (user) {
-          const token = await generateJWT(user);
-          const loginData = { token, user };
-
-          const data = { data: loginData, isSuccess: true };
-          res.send(data);
-        } else {
-          const data = { data: null, isSuccess: false };
-          res.send(data);
-        }
-      })
-      .catch(next);
+    try {
+      const users = await getAll();
+      const user = users.find((u) => u.email === email);
+      if (user && (await bcrypt.compare(password, user.password))) {
+        const token = await generateJWT(user);
+        const loginData = { token, user };
+        res.send({ data: loginData, isSuccess: true });
+      } else {
+        res.send({ data: null, isSuccess: false });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   })
-  .get("/search/:query", async (req, res) => {
+  .get("/search/:query", requireUser(), async (req, res) => {
     try {
       const query = req.params.query;
       const result = await users.searchUsers(query);
@@ -94,7 +75,7 @@ router
       res.status(500).send("Internal Server Error");
     }
   })
-  .put("/updateUserRole/:id", async (req, res) => {
+  .put("/updateUserRole/:id", requireUser(), async (req, res) => {
     try {
       const { id } = req.params;
       const { role } = req.body;

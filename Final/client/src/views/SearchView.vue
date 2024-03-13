@@ -98,6 +98,11 @@ const filteredUsers = computed(filterUsers);
   padding: 0.5rem;
   border: 1px solid #eaeaea;
   border-radius: 5px;
+  transition: box-shadow 0.3s ease;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
 }
 
 .user-results {
@@ -110,9 +115,21 @@ const filteredUsers = computed(filterUsers);
   border-radius: 8px;
   border: 1px solid #eaeaea;
   margin-bottom: 1rem;
+  animation: slideUp 0.5s ease;
 }
 
 .user-item p {
   margin: 0.5rem 0;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

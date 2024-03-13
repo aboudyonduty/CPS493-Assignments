@@ -47,10 +47,8 @@ const addNewUser = async () => {
       role: "",
     };
     users.value = await getUsers();
-    // Optionally, show a success message to the user
   } catch (error) {
     console.error("Error adding user:", error);
-    // Handle the error (e.g., show an error message)
   }
 };
 
@@ -199,7 +197,8 @@ button {
   font-weight: 500;
   border: none;
   color: white;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .button.is-primary {
@@ -208,6 +207,8 @@ button {
 
 .button.is-primary:hover {
   background-color: #005ed4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .button.is-danger {
@@ -216,6 +217,8 @@ button {
 
 .button.is-danger:hover {
   background-color: #e02b2b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .user-list {
@@ -233,6 +236,8 @@ button {
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.5s ease;
 }
 
 .user-detail-section {
@@ -249,6 +254,17 @@ button {
 .user-data {
   font-size: 0.9rem;
   color: #333;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 600px) {

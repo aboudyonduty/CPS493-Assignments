@@ -12,8 +12,23 @@ export function rest(url: string, data?: any, method?: string, headers?: any) {
     }
   }
 
+  if (fetchMethod === "DELETE") {
+    return fetch(url, {
+      method: fetchMethod,
+      headers: {
+        ...headers,
+      },
+    }).then((res) =>
+      res.ok
+        ? res.json()
+        : res.json().then((x) => {
+            throw { ...x, message: x.error };
+          })
+    );
+  }
+
   let body;
-  if (fetchMethod !== "DELETE" && data) {
+  if (data) {
     if (fetchMethod === "PUT" || fetchMethod === "POST") {
       body = JSON.stringify(data);
     }

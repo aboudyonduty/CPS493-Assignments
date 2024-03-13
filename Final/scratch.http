@@ -18,6 +18,9 @@ Content-Type: application/json
 ###
 GET {{host}}/api/v1/UsersController/getAllUsers
 
+###
+GET http://localhost:3000/posts
+
 
 ###
 POST {{host}}/api/v1/WorkoutsController/addWorkout
@@ -33,7 +36,7 @@ Content-Type: application/json
 
 ###
 GET {{host}}/api/v1/WorkoutsController/getWorkoutsById/1
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgzNWE2MjA1YjdlOTMxZTA3MTEzYTIiLCJpZCI6MSwiZmlyc3ROYW1lIjoiQWJkdWxsYWgiLCJsYXN0TmFtZSI6IkFsaSIsImVtYWlsIjoiYW9hbGk3MjZAZ21haWwuY29tIiwidXNlcm5hbWUiOiJBYm91ZHlvbmR1dHkiLCJwYXNzd29yZCI6ImFib3VkeWR1dHkyMDAyISIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwOTI0MjcxMSwiZXhwIjoxNzA5MjUzNTExfQ.WItYRIR4YdrOE9TjORpkbtMUJuGJisdbVdcSVM0q4aw
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgzNWE2MjA1YjdlOTMxZTA3MTEzYTIiLCJpZCI6MSwiZmlyc3ROYW1lIjoiQWJkdWxsYWgiLCJsYXN0TmFtZSI6IkFsaSIsImVtYWlsIjoiYW9hbGk3MjZAZ21haWwuY29tIiwidXNlcm5hbWUiOiJBYm91ZHlvbmR1dHkiLCJwYXNzd29yZCI6ImFib3VkeWR1dHkyMDAyISIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxMDE3MzkyMSwiZXhwIjoxNzEwMTg0NzIxfQ.twTrsDQz1GUF7H-vJGUrDmHx21mTuzUvgrgMuza-Pqs
 
 ###
 DELETE {{host}}/api/v1/UsersController/deleteUser/65c41da9fc9683adb3278689
@@ -55,4 +58,17 @@ DELETE {{host}}/api/v1/WorkoutsController/deleteAllWorkoutsById/4
 
 ###
 GET {{host}}/api/v1/UsersController/getAllUsers
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgzNWE2MjA1YjdlOTMxZTA3MTEzYTIiLCJpZCI6MSwiZmlyc3ROYW1lIjoiQWJkdWxsYWgiLCJsYXN0TmFtZSI6IkFsaSIsImVtYWlsIjoiYW9hbGk3MjZAZ21haWwuY29tIiwidXNlcm5hbWUiOiJBYm91ZHlvbmR1dHkiLCJwYXNzd29yZCI6ImFib3VkeWR1dHkyMDAyISIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwOTI0MjcxMSwiZXhwIjoxNzA5MjUzNTExfQ.WItYRIR4YdrOE9TjORpkbtMUJuGJisdbVdcSVM0q4aw
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWM2NmM5YmFjMDgxM2MyOTA0YTRkNWMiLCJpZCI6MywiZmlyc3ROYW1lIjoiTW9zaGUiLCJsYXN0TmFtZSI6IlBsb3RraW4iLCJlbWFpbCI6InBsb3RraW5tQG5ld3BhbHR6LmVkdSIsInVzZXJuYW1lIjoiSmV3cGFsdHoiLCJwYXNzd29yZCI6Ikpld1BhbHR6MjAyNCEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTAxNzQxNjgsImV4cCI6MTcxMDE4NDk2OH0.Fdq3VMqt8zPNx7TbRhfbu2WsZtBx3ZgwHP35mvP6-5E
+
+###
+GET http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "firstName": "Abdullah",
+  "lastName": "Ali",
+  "email": "aoali726@gmail.com",
+  "password": "9uQFF1Lh",
+  "username": "Aboudyonyduty",
+  "role": "admin"
+}

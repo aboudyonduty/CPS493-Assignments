@@ -1,7 +1,7 @@
 <!-- بسم الله -->
 
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import { getSession } from "@/model/session";
 import { type Workout, addWorkout } from "@/model/workouts";
 
@@ -106,7 +106,7 @@ const submitWorkout = async () => {
 
         <!-- Submit Button -->
         <div class="field">
-          <div class="control">
+          <div class="control has-text-centered">
             <button class="button is-primary">Add Workout</button>
           </div>
         </div>
@@ -115,6 +115,4 @@ const submitWorkout = async () => {
   </section>
 </template>
 
-<style>
-/* Your styles here */
-</style>
+<style></style>

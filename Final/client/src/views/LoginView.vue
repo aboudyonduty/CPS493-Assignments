@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { getSession, useLogin } from "@/model/session";
+import { useLogin } from "@/model/session";
 
 const router = useRouter();
-const session = getSession();
 const { login } = useLogin();
 const email = ref("");
 const password = ref("");

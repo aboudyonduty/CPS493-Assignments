@@ -16,6 +16,8 @@ const jwt = require("jsonwebtoken");
 const { connect } = require("./mongo");
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const { ObjectId } = require("./mongo");
 
@@ -49,6 +51,9 @@ async function addUser(user) {
     throw new Error("Email already in use");
   }
 
+  // Hasing the password
+  user.password = await bcrypt.hash(user.password, saltRounds);
+
   // Find the maximum id value in the collection
   const maxIdUser = await collection.find().sort({ id: -1 }).limit(1).toArray();
   const maxId = maxIdUser.length > 0 ? maxIdUser[0].id : 0;
@@ -72,24 +77,38 @@ async function seed() {
 }
 
 function generateJWT(user) {
+  // Using only essential and non-sensitive information for the token payload
+  const payload = {
+    id: user.id, // MongoDB _id can also be used depending on your preference
+    email: user.email,
+    role: user.role,
+  };
+
   return new Promise((resolve, reject) => {
-    jwt.sign(user, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN }, (err, token) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(token);
+    jwt.sign(
+      payload,
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN },
+      (err, token) => {
+        if (err) {
+          console.error("Error generating JWT", err);
+          reject(err);
+        } else {
+          resolve(token);
+        }
       }
-    });
+    );
   });
 }
 
 function verifyJWT(token) {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, JWT_SECRET, (err, user) => {
+    jwt.verify(token, JWT_SECRET, (err, decodedPayload) => {
       if (err) {
+        console.error("Error verifying JWT", err);
         reject(err);
       } else {
-        resolve(user);
+        resolve(decodedPayload);
       }
     });
   });

@@ -10,17 +10,43 @@ const session = reactive({
   user: null as User | null,
   token: null as string | null,
   redirectUrl: null as string | null,
+  tokenExpired: false,
 });
+
+let tokenExpirationCheckInterval: ReturnType<typeof setInterval>;
+
+export function initializeSession() {
+  // Check if token exists and is valid on initialization
+  if (session.token) {
+    checkTokenExpiration();
+    tokenExpirationCheckInterval = setInterval(checkTokenExpiration, 60000); // Check token expiration every minute
+  }
+}
 
 export function api(
   action: string,
   body?: any,
-  method?: string,
+  method?: "GET" | "POST" | "PUT" | "DELETE",
   headers?: any
 ) {
-  return myFetch
-    .api(`${action}`, body, method, headers)
-    .catch((err) => showError(err));
+  let requestHeaders: Record<string, string> = {
+    ...headers,
+    "Content-Type": "application/json",
+  };
+
+  if (session.token) {
+    requestHeaders["Authorization"] = `Bearer ${session.token}`;
+  }
+
+  return myFetch.api(`${action}`, body, method, requestHeaders).catch((err) => {
+    if (err.status === 401) {
+      // Token expired or unauthorized, handle accordingly
+      session.tokenExpired = true;
+      handleTokenExpiration();
+    } else {
+      showError(err);
+    }
+  });
 }
 
 export function showError(err: any) {
@@ -40,6 +66,7 @@ export function showError(err: any) {
     },
   }).showToast();
 }
+
 export function getSession() {
   return session;
 }
@@ -58,13 +85,21 @@ export function useLogin() {
 
       session.user = response.data.user;
       session.token = response.data.token;
+      session.tokenExpired = false;
+
+      checkTokenExpiration();
+      tokenExpirationCheckInterval = setInterval(checkTokenExpiration, 60000); // Check token expiration every minute
 
       router.push(session.redirectUrl || "/");
       return session.user;
     },
     logout() {
       session.user = null;
+      session.token = null;
+      session.tokenExpired = false;
+      clearInterval(tokenExpirationCheckInterval);
       router.push("/LoginView");
+      window.location.reload(); // Reload the page upon logout
     },
   };
 }
@@ -77,20 +112,44 @@ export function useSignUp() {
       const response = await api("/UsersController/addUser", user);
 
       if (!response.isSuccess) {
-        // Show an error toast if login is not successful
         showError({ message: "Invalid credentials. Please try again." });
         return null;
       }
 
       session.user = response.data.user;
       session.token = response.data.token;
+      session.tokenExpired = false;
+
+      checkTokenExpiration();
+      tokenExpirationCheckInterval = setInterval(checkTokenExpiration, 60000); // Check token expiration every minute
 
       router.push(session.redirectUrl || "/");
       return session.user;
     },
     logout() {
       session.user = null;
+      session.token = null;
+      session.tokenExpired = false;
+      clearInterval(tokenExpirationCheckInterval);
       router.push("/LoginView");
+      window.location.reload(); // Reload the page upon logout
     },
   };
+}
+
+function checkTokenExpiration() {
+  if (!session.token) return;
+
+  const token = session.token.split(".")[1];
+  const decodedToken = JSON.parse(atob(token));
+  const expirationTime = decodedToken.exp * 1000; // Convert expiration time to milliseconds
+
+  if (Date.now() >= expirationTime) {
+    session.tokenExpired = true;
+    handleTokenExpiration();
+  }
+}
+
+function handleTokenExpiration() {
+  showError({ message: "Your session has expired. Please log in again." });
 }

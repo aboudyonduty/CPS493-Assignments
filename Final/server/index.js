@@ -5,7 +5,10 @@ const express = require("express");
 require("dotenv").config();
 const UsersController = require("./controllers/UsersController");
 const WorkoutsController = require("./controllers/WorkoutsController");
-const { parseAuthorizationToken, requireUser } = require("./middleware/authorization");
+const {
+  parseAuthorizationToken,
+  requireUser,
+} = require("./middleware/authorization");
 const app = express();
 
 const PORT = process.env.PORT ?? 3000;
@@ -32,8 +35,6 @@ app
     next();
   })
   .use(parseAuthorizationToken)
-
-
 
   .use("/api/v1/WorkoutsController", requireUser(), WorkoutsController)
 
