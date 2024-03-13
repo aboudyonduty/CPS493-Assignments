@@ -15,4 +15,5 @@ Features:
 + Handles using an already existing email to signup or add a user
 + Handles not filling out all necessary fields
 + Individuals are not able to view sensitive information when trying to access functions
++ Pages will no longer be functional when the token expires (15 minutes)... users must logout and log back in
 
